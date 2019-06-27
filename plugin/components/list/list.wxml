@@ -1,0 +1,5 @@
+<view wx:if="{{user}}">
+  <view>plugin appid: {{user.appid}}</view>
+  <view>openid: {{user.openid}}</view>
+  <view>unionid: {{user.unionid}}</view>
+</view>
