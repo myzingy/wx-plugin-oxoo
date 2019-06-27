@@ -49,4 +49,31 @@ module.exports = {
     }
     return "";
   },
+  getUploadPath(regionName){
+    /**
+     *
+     华东	z0	服务器端上传：http(s)://up.qiniup.com
+     客户端上传： http(s)://upload.qiniup.com
+     华北	z1	服务器端上传：http(s)://up-z1.qiniup.com
+     客户端上传：http(s)://upload-z1.qiniup.com
+     华南	z2	服务器端上传：http(s)://up-z2.qiniup.com
+     客户端上传：http(s)://upload-z2.qiniup.com
+     北美	na0	服务器端上传：http(s)://up-na0.qiniup.com
+     客户端上传：http(s)://upload-na0.qiniup.com
+     东南亚	as0	服务器端上传：http(s)://up-as0.qiniup.com
+     客户端上传：http(s)://upload-as0.qiniup.com
+     */
+    let sup='https://up{region}.qiniup.com';
+    let cup='https://upload{region}.qiniup.com';
+    const regions={
+      华东:'',//z0 def,
+      华北:'z1',
+      华南:'z2',
+      北美:'na0',
+      东南亚:'as0',
+    }
+    regionName=regions[regionName]
+    regionName=regionName||''
+    return cup.replace('{region}',regionName);
+  },
 }

@@ -6,6 +6,7 @@ Page({
       secretKey:'oZMMVN6phk49lG0J1xwmi1Ju0ETT15EnAEWcU9Cs',
       bucket:'colorcun-attr',
       fileType:'image',
+      region:'华东'
     }
   },
   onLoad: function() {
