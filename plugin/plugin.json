@@ -1,6 +1,6 @@
 {
   "publicComponents": {
-    "list": "components/list/list"
+    "qnupload": "components/qiniu/upload"
   },
   "main": "index.js"
 }

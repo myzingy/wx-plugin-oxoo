@@ -1,1 +1,3 @@
-<list />
+<qnupload qnConf="{{qnConf}}">
+    <view class="upload" ></view>
+</qnupload>
