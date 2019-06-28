@@ -2,7 +2,21 @@ import cloud from '../../api/cloud'
 import util from '../../api/util'
 Component({
   properties:{
+    /**
+     * qnConf.accessKey
+     * qnConf.secretKey
+     * qnConf.bucket
+     * qnConf.fileType image|video|audio|file def:file
+     * qnConf.region 华东
+     */
     qnConf:{
+      type:Object,
+      value:null
+    },
+    /**
+     * upConf.prefixPath 前置路径
+     */
+    upConf:{
       type:Object,
       value:null
     }
@@ -24,6 +38,10 @@ Component({
       }else{
         filename=util.str2key(file)
       }
+      let prefixPath=this.data.upConf.prefixPath?this.data.upConf.prefixPath:'';
+      if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
+        prefixPath+='/';
+      }
       console.log('wx.uploadFile.file',file,filename);
       util.promise('wx.uploadFile',{
         url:cloud.getUploadPath(this.data.qnConf.region),
@@ -34,7 +52,7 @@ Component({
         },
         formData:{
           token:token,
-          'x:userpath':'userpath/',
+          'x:userpath':prefixPath,
           'x:filename':filename,
         }
       }).then(res=>{

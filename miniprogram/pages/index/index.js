@@ -7,6 +7,9 @@ Page({
       bucket:'colorcun-attr',
       fileType:'image',
       region:'华东'
+    },
+    upConf:{
+      prefixPath:'prefixPath',
     }
   },
   onLoad: function() {
