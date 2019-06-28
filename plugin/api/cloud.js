@@ -28,9 +28,9 @@ module.exports = {
    * @returns {Promise.<*>}
    */
   async getTokenQiniu(params){
-    CK.qntoken=CK.qntoken+util.str2key(params.accessKey+params.secretKey+params.bucket+params.fileType);
+    let qntoken=CK.qntoken+util.str2key(params.accessKey+params.secretKey+params.bucket+params.fileType);
     try{
-      let token=await util.cache(CK.qntoken);
+      let token=await util.cache(qntoken);
       if(token) return token;
     }catch (e){}
     let res=await wx.cloud.callFunction({
@@ -44,7 +44,7 @@ module.exports = {
       },
     })
     if(res.result.code==200){
-      util.cache(CK.qntoken,res.result.data.token,-1)
+      util.cache(qntoken,res.result.data.token,1800)
       return res.result.data.token;
     }
     return "";

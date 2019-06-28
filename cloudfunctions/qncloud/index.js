@@ -25,7 +25,8 @@ function getToken(params){
     var mac = new qiniu.auth.digest.Mac(params.accessKey, params.secretKey);
     var options = {
       scope: params.bucket,
-      saveKey:+'$(x:path)'+dateFormat(new Date(),"isoDate")+'/$(fname)',
+      saveKey:'$(x:userpath)'+dateFormat(new Date(),"isoDate")+'/$(x:filename)',
+      forceSaveKey:true,
       returnBody: returnBody
     }
     var putPolicy = new qiniu.rs.PutPolicy(options);
