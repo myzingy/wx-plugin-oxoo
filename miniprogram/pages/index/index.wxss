@@ -1,5 +1,28 @@
+.qnupload{
+    display: inline-block;
+}
 .upload{
     width: 200rpx;
     height: 200rpx;
     background-color: antiquewhite;
+    position: relative;
+    margin: 20rpx;
+}
+.upload.add:before{
+    content: '';
+    left:calc(50% - 50rpx);
+    top:calc(50% - 10rpx);
+    width: 100rpx;
+    height: 20rpx;
+    background-color: #FAC7B6;
+    position: absolute;
+}
+.upload.add:after{
+    content: '';
+    left:calc(50% - 10rpx);
+    top:calc(50% - 50rpx);
+    width: 20rpx;
+    height: 100rpx;
+    background-color: #FAC7B6;
+    position: absolute;
 }

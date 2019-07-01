@@ -10,7 +10,9 @@ Page({
     },
     upConf:{
       prefixPath:'prefixPath',
-    }
+      count:3,
+    },
+    files:[],
   },
   onLoad: function() {
     plugin.getOpenid().then(res=>{
@@ -23,6 +25,12 @@ Page({
       fileType:'image',
     }).then(res=>{
       console.log(res);
+    })
+  },
+  qnevent(e){
+    console.log('qnevent',e.detail);
+    this.setData({
+      files:e.detail.data,
     })
   }
 })
