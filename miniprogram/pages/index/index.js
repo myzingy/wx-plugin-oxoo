@@ -12,7 +12,13 @@ Page({
       prefixPath:'prefixPath',
       count:3,
     },
-    files:[],
+    files:[
+      {
+        path:'https://qn.colorcun.com/prefixPath/2019-06-28/443695.png',
+        progress:50,
+        current:0,
+      }
+    ],
   },
   onLoad: function() {
     plugin.getOpenid().then(res=>{

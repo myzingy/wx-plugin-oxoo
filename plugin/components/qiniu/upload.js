@@ -20,6 +20,13 @@ Component({
     upConf:{
       type:Object,
       value:null
+    },
+    /**
+     * this file
+     */
+    file:{
+      type:Object,
+      value:{},
     }
   },
   data: {
@@ -45,7 +52,7 @@ Component({
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
         prefixPath+='/';
       }
-      this.files[fileIndex].progress=0;
+      this.files[fileIndex].progress=Math.random()*20+10;
       console.log('wx.uploadFile.file',file,filename);
       this.triggerEvent('event',{act:'uploadStart',data:this.files,fileCurrent:fileIndex})
       util.promise('wx.uploadFile',{
@@ -74,7 +81,7 @@ Component({
     changeFile(e){
       let count=this.data.upConf.count||1;
       let nowCount=this.files.length;
-      let fileCurrent=util.attr(e,'current')||0;
+      let fileCurrent=this.data.file.current||0;
       let hasEdit=false;
       if(fileCurrent==0 && nowCount==0){//首次选择
         hasEdit=false;
@@ -97,7 +104,10 @@ Component({
             this.files[fileCurrent]=res.tempFiles[0]
             this.uploadFile(res.tempFiles[0].path,fileCurrent)
           }else{
-            this.files=this.files.concat(res.tempFiles);
+            res.tempFiles.forEach((f,fi)=>{
+              f.current=fi;
+              this.files.push(f)
+            })
             this.files.forEach((f,fi)=>{
               this.uploadFile(f.path,fi)
             })

@@ -18,7 +18,7 @@ function getToken(params){
   if(params.accessKey && params.secretKey && params.bucket){
     let returnBody
     if(params.fileType=='image'){
-      returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":"$(imageAve)"}'
+      returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":$(imageAve)}'
     }else{
       returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)"}'
     }
