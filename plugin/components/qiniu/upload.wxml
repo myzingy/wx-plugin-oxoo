@@ -1,6 +1,4 @@
 <view bindtap="changeFile" class="upload-view">
   <slot></slot>
-  <view class="upload-mask" wx:if="{{file.progress>0 && file.progress<100}}"
-        style="transform:scale({{(100-file.progress)/100}},{{(100-file.progress)/100}});">
-  </view>
+  <view class="upload-mask animation" wx:if="{{file.progress>0 && file.progress<100}}"></view>
 </view>

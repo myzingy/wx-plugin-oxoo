@@ -1,12 +1,14 @@
 .qnupload{
     display: inline-block;
-}
-.upload{
     width: 200rpx;
     height: 200rpx;
+    padding: 20rpx;
+}
+.upload{
     background-color: antiquewhite;
     position: relative;
-    margin: 20rpx;
+    width: 100%;
+    height: 100%;
 }
 .upload.add:before{
     content: '';
