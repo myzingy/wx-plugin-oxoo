@@ -18,7 +18,7 @@
 组件 | 描述  
 ---------------- | --------------  
 qnupload | 直接配置七牛AK、SK，即可实现上传  
----------------- | --------------  
+
    
   
 
@@ -119,41 +119,16 @@ var vktool = requirePlugin("vktool")
 ````
 接口 | 描述   
 ---------------- | --------------  
-getOpenid | 获得用户标识，依赖云函数
----------------- | --------------
-
-getTokenQiniu | 获得七牛token，之后可以操作你的七牛云
----------------- | --------------
-
-date_format | 将时间戳（整型10位）格式化为format中定义的格式  
----------------- | --------------
-
-strtotime | 时间串转为时间戳
----------------- | --------------
-
-time | 时间串转为时间戳
----------------- | --------------
-
-toast | wx.showToast 的封装 
----------------- | --------------
-
-cache | 带有过期时间的异步存储
----------------- | --------------
-
-val | 获取 input/textarea 值，e必须是bind事件传入的event 
----------------- | --------------
-
-attr | 获取 dom 上自定义的data-key="value" 的值
----------------- | --------------
-
-http_build_query | 将 param 键值对拼接成 url 参数，如 key1=val1&key2=val2
----------------- | --------------
-
-promise | 微信 api 简单 promise化，可以使用 then 或 await 进行处理
----------------- | --------------
-
-cache_clear | 清理过期缓存
----------------- | --------------  
-
-mdx | 类似MD5函数，将目标转为一个比较段的字串
----------------- | --------------  
+getOpenid | 获得用户标识，依赖云函数  
+getTokenQiniu | 获得七牛token，之后可以操作你的七牛云  
+date_format | 将时间戳（整型10位）格式化为format中定义的格式    
+strtotime | 时间串转为时间戳  
+time | 时间串转为时间戳  
+toast | wx.showToast 的封装   
+cache | 带有过期时间的异步存储  
+val | 获取 input/textarea 值，e必须是bind事件传入的event   
+attr | 获取 dom 上自定义的data-key="value" 的值  
+http_build_query | 将 param 键值对拼接成 url 参数，如 key1=val1&key2=val2  
+promise | 微信 api 简单 promise化，可以使用 then 或 await 进行处理  
+cache_clear | 清理过期缓存  
+mdx | 类似MD5函数，将目标转为一个比较段的字串   
