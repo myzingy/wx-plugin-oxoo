@@ -10,13 +10,35 @@
     height: 60rpx;
     top:calc(50% - 30rpx);
     right:calc(50% - 30rpx);
-    background: linear-gradient(to bottom right,rgba(255,255,0,0.7),rgba(0,200,0,0.7)) ;
+    background: linear-gradient(to bottom right,rgba(255,255,0,0.7),rgba(0,200,0,0.7));
     border-radius: 0 100% 0 100%;
 }
-.animation{
-    animation:butAnimation .8s linear infinite;
+.upload-mask.circle{
+    border-radius: 100%;
 }
-@keyframes butAnimation
+.upload-mask.ring{
+    background: none;
+    border-radius: 100%;
+    border:10rpx solid rgba(0,0,0,0.5);
+    width: 50rpx;
+    height: 50rpx;
+    /*border-image: linear-gradient(to bottom right,rgba(255,255,0,0.7),rgba(0,200,0,0.7));*/
+}
+.upload-mask.ring:after{
+    content: "";
+    position: absolute;
+    top:calc(50% - 25rpx);
+    right:calc(50% - 25rpx);
+    border:10rpx solid rgba(0,0,0,0.5);
+    width: 30rpx;
+    height: 30rpx;
+    border-radius: 100% 0;
+    border-image: linear-gradient(to bottom right,rgba(255,255,0,0.7),rgba(0,200,0,0.7));
+}
+.animation{
+    animation:rotate 1.2s linear infinite;
+}
+@keyframes rotate
 {
     25%{
         transform:rotate(90deg);

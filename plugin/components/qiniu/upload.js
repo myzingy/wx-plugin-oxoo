@@ -16,6 +16,7 @@ Component({
     /**
      * upConf.prefixPath 前置路径
      * upConf.count  几个文件
+     * upConf.loading none|leaf|circle|ring, def leaf
      */
     upConf:{
       type:Object,
