@@ -14,6 +14,8 @@
     }
   },
 ```
+插件市场  
+https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wxd3dc4206c76f14fc  
 ## 组件  
 组件 | 描述  
 ---------------- | --------------  
