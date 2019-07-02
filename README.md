@@ -7,3 +7,5 @@
 ##使用  
 https://github.com/myzingy/wx-plugin-oxoo/blob/master/doc/README.md
 
+![链接](./doc/ex1.png)
+
