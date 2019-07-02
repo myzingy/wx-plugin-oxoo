@@ -17,6 +17,7 @@ Component({
      * upConf.prefixPath 前置路径
      * upConf.count  几个文件
      * upConf.loading none|leaf|circle|ring, def leaf
+     * upConf.group 一个页面上多个组件的区分标识
      */
     upConf:{
       type:Object,
@@ -42,22 +43,26 @@ Component({
 
   },
   attached: async function(){
+    this.upConfGroup='def'
     console.log('this.data.qnConf',this.data.qnConf)
     cloud.getTokenQiniu(this.data.qnConf)
-    this.files=[];
+    this.files={};
+    this.files[this.upConfGroup]=[];
     if(this.data.files.length>0){
-      this.files=this.data.files;
+      this.files[this.upConfGroup]=this.data.files;
     }
   },
   observers: {
     'files': function(files) {
-      this.files=this.data.files;
+      //console.log(this.files,this.upConfGroup,this.data.files)
+      if(!this.files) return;
+      this.files[this.upConfGroup]=this.data.files;
     }
   },
   methods:{
     async uploadFile(file,fileIndex=0){
-      if(this.files[fileIndex] && this.files[fileIndex].path.indexOf('http://tmp')<0) return;//已上传
-      if(this.files[fileIndex] && this.files[fileIndex].progress==100) return;//已上传
+      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('http://tmp')<0) return;//已上传
+      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].progress==100) return;//已上传
       let token=await cloud.getTokenQiniu(this.data.qnConf)
       let filename=file.split('.');
       if(filename[filename.length-1].length<5){
@@ -69,9 +74,9 @@ Component({
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
         prefixPath+='/';
       }
-      this.files[fileIndex].progress=Math.random()*20+10;
+      this.files[this.upConfGroup][fileIndex].progress=Math.random()*20+10;
       console.log('wx.uploadFile.file',file,filename);
-      this.triggerEvent('event',{act:'uploadStart',data:this.files,fileCurrent:fileIndex})
+      this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       util.promise('wx.uploadFile',{
         url:cloud.getUploadPath(this.data.qnConf.region),
         filePath:file,
@@ -86,29 +91,29 @@ Component({
         }
       }).then(res=>{
         console.log('wx.uploadFile.success',res);
-        this.files[fileIndex].progress=100;
-        this.files[fileIndex].remote=JSON.parse(res.data);
-        this.triggerEvent('event',{act:'uploadCompleted',data:this.files,fileCurrent:fileIndex})
+        this.files[this.upConfGroup][fileIndex].progress=100;
+        this.files[this.upConfGroup][fileIndex].remote=JSON.parse(res.data);
+        this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       }).catch(res=>{
         console.log('wx.uploadFile.fail',res);
-        this.files[fileIndex].hasFail=true;
-        this.triggerEvent('event',{act:'uploadFail',data:this.files,fileCurrent:fileIndex})
+        this.files[this.upConfGroup][fileIndex].hasFail=true;
+        this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       })
     },
     changeFile(e){
       let count=this.data.upConf.count||1;
-      let nowCount=this.files.length;
+      let nowCount=this.files[this.upConfGroup].length;
       let fileCurrent=0
       if(this.data.file){
         fileCurrent=this.data.file.current
       }else{
-        fileCurrent=this.files.length;
+        fileCurrent=this.files[this.upConfGroup].length;
       }
       let hasEdit=false;
       if(fileCurrent==0 && nowCount==0){//首次选择
         hasEdit=false;
       }else{//
-        if(this.files[fileCurrent] && this.files[fileCurrent]!=null){//新增
+        if(this.files[this.upConfGroup][fileCurrent] && this.files[this.upConfGroup][fileCurrent]!=null){//新增
           hasEdit=true;
         }else{
           hasEdit=false;
@@ -130,17 +135,17 @@ Component({
         sourceType:['album'],
         success:res=>{
           console.log('wx.chooseImage',res);
-          this.triggerEvent('event',{act:'chooseImage',data:this.files})
+          this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
           if(hasEdit){
-            this.files[fileCurrent]=res.tempFiles[0]
-            this.files[fileCurrent].current=fileCurrent;
+            this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
+            this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
             this.uploadFile(res.tempFiles[0].path,fileCurrent)
           }else{
             res.tempFiles.forEach((f,fi)=>{
               f.current=nowCount+fi;
-              this.files.push(f)
+              this.files[this.upConfGroup].push(f)
             })
-            this.files.forEach((f,fi)=>{
+            this.files[this.upConfGroup].forEach((f,fi)=>{
               this.uploadFile(f.path,fi)
             })
           }

@@ -21,6 +21,21 @@ Page({
     ],
     hasAddFile:true,//出现上传加号
     token:'',//七牛token
+
+    upConf2:{
+      prefixPath:'prefixPath',
+      count:3,
+      group:'222',
+      loading:'ring',
+    },
+    files2:[
+      {
+        path:'https://qn.colorcun.com/prefixPath/2019-06-28/443695.png',
+        progress:50,
+        current:0,
+      }
+    ],
+    hasAddFile2:true,//出现上传加号
   },
   onLoad: function() {
     console.log(plugin)
@@ -44,6 +59,13 @@ Page({
     this.setData({
       files:e.detail.data,
       hasAddFile:e.detail.data.length<this.data.upConf.count
+    })
+  },
+  qnevent2(e){
+    console.log('qnevent2',e.detail);
+    this.setData({
+      files2:e.detail.data,
+      hasAddFile2:e.detail.data.length<this.data.upConf2.count
     })
   }
 })

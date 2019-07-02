@@ -13,6 +13,23 @@
 </qnupload>
 
 <view class="block">
+    <view class="block-title">再来一组(通过 upConf.group 区分)</view>
+    <block wx:for="{{files2}}" wx:key="files.key">
+        <qnupload qnConf="{{qnConf}}" upConf="{{upConf2}}"
+                  file="{{item}}" files="{{files2}}"
+                  bindevent="qnevent2" class="qnupload">
+            <view class="upload {{item?'':'add'}}" style="background-image: url('{{item.path}}')"></view>
+        </qnupload>
+    </block>
+    <qnupload wx:if="{{hasAddFile2}}"
+              qnConf="{{qnConf}}" upConf="{{upConf2}}"
+              file="{{item}}" files="{{files2}}"
+              bindevent="qnevent2" class="qnupload">
+        <view class="upload add"></view>
+    </qnupload>
+</view>
+
+<view class="block">
     <view class="block-title">插件使用</view>
     <view>1. 使用组件方式引入，配置好组件参数即可</view>
     <view>2. 使用接口方式，获取token后自行上传到七牛</view>
