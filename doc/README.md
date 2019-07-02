@@ -9,7 +9,7 @@
 2，app.json 中引入插件
 "plugins": {
     "vktool": {
-      "version": "1.0.5",
+      "version": "最新版本号",
       "provider": "wxd3dc4206c76f14fc"
     }
   },
@@ -91,6 +91,7 @@ qnupload | 直接配置七牛AK、SK，即可实现上传
       bucket:'fotoo',//存储空间
       fileType:'image',//image|video|audio|file def:file
       region:'华东',//存储区域
+      domain:'http://xxx.xxxx.com',//你绑定的域名,非必填项
     },
     upConf:{
       prefixPath:'prefixPath',//上传到七牛后有一个路径前缀，可为空；（还会自动强制带一个日期前缀）

@@ -8,6 +8,7 @@ Component({
      * qnConf.bucket
      * qnConf.fileType image|video|audio|file def:file
      * qnConf.region 华东
+     * qnConf.domain 域名
      */
     qnConf:{
       type:Object,
@@ -92,7 +93,9 @@ Component({
       }).then(res=>{
         console.log('wx.uploadFile.success',res);
         this.files[this.upConfGroup][fileIndex].progress=100;
-        this.files[this.upConfGroup][fileIndex].remote=JSON.parse(res.data);
+        let remote=JSON.parse(res.data);
+        remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
+        this.files[this.upConfGroup][fileIndex].remote=remote
         this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       }).catch(res=>{
         console.log('wx.uploadFile.fail',res);

@@ -6,7 +6,8 @@ Page({
       secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
       bucket:'fotoo',
       fileType:'image',
-      region:'华东'
+      region:'华东',
+      domain:'http://qn001.pfotoo.com'
     },
     upConf:{
       prefixPath:'prefixPath',
