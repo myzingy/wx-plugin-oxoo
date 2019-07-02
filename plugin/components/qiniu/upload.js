@@ -28,7 +28,15 @@ Component({
     file:{
       type:Object,
       value:{},
+    },
+    /**
+     * this files
+     */
+    files:{
+      type:Array,
+      value:[],
     }
+
   },
   data: {
 
@@ -37,10 +45,18 @@ Component({
     console.log('this.data.qnConf',this.data.qnConf)
     cloud.getTokenQiniu(this.data.qnConf)
     this.files=[];
+    if(this.data.files.length>0){
+      this.files=this.data.files;
+    }
   },
-
+  observers: {
+    'files': function(files) {
+      this.files=this.data.files;
+    }
+  },
   methods:{
     async uploadFile(file,fileIndex=0){
+      if(this.files[fileIndex] && this.files[fileIndex].path.indexOf('http://tmp')<0) return;//已上传
       if(this.files[fileIndex] && this.files[fileIndex].progress==100) return;//已上传
       let token=await cloud.getTokenQiniu(this.data.qnConf)
       let filename=file.split('.');
@@ -82,17 +98,31 @@ Component({
     changeFile(e){
       let count=this.data.upConf.count||1;
       let nowCount=this.files.length;
-      let fileCurrent=this.data.file.current||0;
+      let fileCurrent=0
+      if(this.data.file){
+        fileCurrent=this.data.file.current
+      }else{
+        fileCurrent=this.files.length;
+      }
       let hasEdit=false;
       if(fileCurrent==0 && nowCount==0){//首次选择
         hasEdit=false;
       }else{//
-        if(this.files[nowCount]==null){//新增
-          hasEdit=false;
-        }else{
+        if(this.files[fileCurrent] && this.files[fileCurrent]!=null){//新增
           hasEdit=true;
+        }else{
+          hasEdit=false;
         }
-
+      }
+      console.log({
+        'this.data.file':this.data.file,
+        count:count,
+        nowCount:nowCount,
+        fileCurrent:fileCurrent,
+        hasEdit:hasEdit
+      })
+      if(!hasEdit && count-nowCount<1){
+        return util.toast('最多只能上传'+count+'个文件','none');
       }
       wx.chooseImage({
         count:hasEdit?1:(count-nowCount),
@@ -103,10 +133,11 @@ Component({
           this.triggerEvent('event',{act:'chooseImage',data:this.files})
           if(hasEdit){
             this.files[fileCurrent]=res.tempFiles[0]
+            this.files[fileCurrent].current=fileCurrent;
             this.uploadFile(res.tempFiles[0].path,fileCurrent)
           }else{
             res.tempFiles.forEach((f,fi)=>{
-              f.current=fi;
+              f.current=nowCount+fi;
               this.files.push(f)
             })
             this.files.forEach((f,fi)=>{
