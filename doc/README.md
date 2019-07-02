@@ -9,7 +9,7 @@
 2，app.json 中引入插件
 "plugins": {
     "vktool": {
-      "version": "1.0.4",
+      "version": "1.0.5",
       "provider": "wxd3dc4206c76f14fc"
     }
   },
