@@ -28,7 +28,7 @@ module.exports = {
    * @returns {Promise.<*>}
    */
   async getTokenQiniu(params){
-    let qntoken=CK.qntoken+util.str2key(params.accessKey+params.secretKey+params.bucket+params.fileType);
+    let qntoken=CK.qntoken+util.mdx(params.accessKey+params.secretKey+params.bucket+params.fileType);
     try{
       let token=await util.cache(qntoken);
       if(token) return token;

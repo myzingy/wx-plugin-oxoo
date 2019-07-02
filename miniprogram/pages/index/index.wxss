@@ -31,3 +31,19 @@
     background-color: #FAC7B6;
     position: absolute;
 }
+
+
+.block{
+    padding: 20rpx;
+    margin: 20rpx;
+    width: calc(100% - 80rpx - 4rpx);
+    border: 2rpx solid #ccc;
+    border-radius: 10rpx;
+    font-size: 32rpx;
+}
+.block-title{
+    height: 50rpx;
+    line-height: 50rpx;
+    border-bottom: 2rpx solid #ccc;
+    margin-bottom: 30rpx;
+}

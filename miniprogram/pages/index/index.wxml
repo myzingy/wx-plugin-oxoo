@@ -11,3 +11,14 @@
           bindevent="qnevent" class="qnupload">
     <view class="upload add"></view>
 </qnupload>
+
+<view class="block">
+    <view class="block-title">插件使用</view>
+    <view>1. 使用组件方式引入，配置好组件参数即可</view>
+    <view>2. 使用接口方式，获取token后自行上传到七牛</view>
+</view>
+
+<view class="block">
+    <view class="block-title">通过接口获得七牛token</view>
+    <textarea value="{{token}}" style="width: 100%"></textarea>
+</view>

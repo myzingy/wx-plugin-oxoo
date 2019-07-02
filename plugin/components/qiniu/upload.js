@@ -61,9 +61,9 @@ Component({
       let token=await cloud.getTokenQiniu(this.data.qnConf)
       let filename=file.split('.');
       if(filename[filename.length-1].length<5){
-        filename=util.str2key(file)+'.'+filename[filename.length-1]
+        filename=util.mdx(file)+'.'+filename[filename.length-1]
       }else{
-        filename=util.str2key(file)
+        filename=util.mdx(file)
       }
       let prefixPath=this.data.upConf.prefixPath?this.data.upConf.prefixPath:'';
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){

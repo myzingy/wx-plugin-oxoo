@@ -2,9 +2,9 @@ var plugin = requirePlugin("myPlugin")
 Page({
   data:{
     qnConf:{
-      accessKey:'uva-aaonM8dukeR6phc9yuPBrOXk9brrNW_PxLD7',
-      secretKey:'oZMMVN6phk49lG0J1xwmi1Ju0ETT15EnAEWcU9Cs',
-      bucket:'colorcun-attr',
+      accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
+      secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
+      bucket:'fotoo',
       fileType:'image',
       region:'华东'
     },
@@ -19,19 +19,24 @@ Page({
         current:0,
       }
     ],
-    hasAddFile:true,
+    hasAddFile:true,//出现上传加号
+    token:'',//七牛token
   },
   onLoad: function() {
+    console.log(plugin)
     plugin.getOpenid().then(res=>{
       console.log(res);
     })
     plugin.getTokenQiniu({
-      accessKey:'uva-aaonM8dukeR6phc9yuPBrOXk9brrNW_PxLD7',
-      secretKey:'oZMMVN6phk49lG0J1xwmi1Ju0ETT15EnAEWcU9Cs',
-      bucket:'colorcun-attr',
+      accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
+      secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
+      bucket:'fotoo',
       fileType:'image',
     }).then(res=>{
       console.log(res);
+      this.setData({
+        token:res,
+      })
     })
   },
   qnevent(e){

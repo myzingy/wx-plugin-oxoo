@@ -74,47 +74,6 @@ function strtotime(datestr)
 
 
 module.exports = {
-    _config:{
-      request:{
-        method:'POST',
-        dataType:'json',
-        header:{
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        hasHeaderFormids:false, //header 请求头是否携带formids,可以直接指定值作为key
-        hasBodyFormids:false, //请求 body 是否携带formids，可以直接指定值作为key；优先 hasHeaderFormids
-
-        responseKey:'Response', //Response 则使用网络请求状态判断，其它值则使用res.StatusKey 进行判断
-        responseCode:200,   //正常返回结果 StatusKey的值 == StatusCode 视为正常结果
-
-        responseKeyData:'data',   //错误信息的key
-        responseKeyMsg:'msg',   //错误信息的key
-        responseCodeError:400,   //一般性错误 toast 提示信息，如字段必填等
-        responseCodeCrash:500,  //严重错误，如登录超时
-        infoFun:(res)=>{
-            this.toast(res[this._config.request.responseKeyMsg])
-        },
-        errorFun:(res)=>{
-            this.toast(res[this._config.request.responseKeyMsg])
-        },
-        loadFun:(flag=true)=>{
-            if(flag){
-              wx.showLoading({
-                title: 'loading',
-                mask:true
-              })
-            }else{
-                wx.hideLoading()
-            }
-
-        }
-      }
-    },
-    config(conf){
-        Object.keys(conf).forEach(key=>{
-            this._config[key]={...this._config[key],...conf[key]}
-        })
-    },
     date_format: date_format,
     strtotime:strtotime,
     time(hhiiss=''){
@@ -235,80 +194,6 @@ module.exports = {
             }
         })
     },
-
-    /**
-     * 网络请求封装
-     * @param param
-     * @param fouce
-     * @returns {*}
-     */
-    async request(param,fouce=false){
-        let stime=new Date();
-        let conf={...this._config.request,...param};
-        console.log('conf',conf);
-        if(conf.loading && (fouce!='clear' && fouce!='clean')){
-          conf.loadFun()
-        }
-        let request_url=this.http_build_query(param.data||{},param.url);
-        let cache_key=request_url.replace(/http.*\//,'');
-        //console.log('request.url',request_url,cache_key)
-        if(fouce=='clear' || fouce=='clean'){
-            return this.promise('wx.removeStorage',{key:cache_key})
-        }
-        let cache_data=false;
-        if(!fouce && (param.cachetime>0 || param.cachetime==-1)){//从缓存中获取
-            try {
-                cache_data= await this.cache(cache_key)
-                if(cache_data) {
-                    if(typeof cache_data=='object'){
-                      cache_data.isCache=true;
-                    }
-                      if(conf.loading){
-                        conf.loadFun(false)
-                      }
-                  console.log('['+(new Date()-stime)+'ms]'+request_url,cache_data);
-                    return cache_data;
-                }
-            }catch (e){
-                console.log('cache_data',e)
-            }
-
-        }
-        try{
-          console.log('hasHeaderFormids',conf.hasHeaderFormids,conf);
-          if(conf.hasHeaderFormids){//header 携带 formids
-            conf.hasHeaderFormids=conf.hasHeaderFormids===true?'formids':conf.hasHeaderFormids;
-            conf.hasBodyFormids=false;
-            let formids=await this.cache('formids');
-            conf.header[conf.hasHeaderFormids]=formids
-          }else if(conf.hasBodyFormids) {//body// 携带 formids
-            conf.hasBodyFormids=conf.hasBodyFormids===true?'formids':conf.hasBodyFormids;
-            let formids=await this.cache('formids');
-            conf.data[conf.hasBodyFormids]=formids
-          }
-          let res=await this.promise('wx.request',conf);
-          if(conf.responseKey=='Response'){
-            if(res.data[conf.responseKeyData] && (param.cachetime>0 || param.cachetime==-1)){
-              this.cache(cache_key,res.data,param.cachetime)
-            }
-          }else{
-            if(res.data[conf.responseKey]==conf.responseCode
-              && res.data[conf.responseKeyData]
-              && (param.timeout>0 || param.timeout==-1)
-            ){
-              this.cache(cache_key,res.data,param.cachetime)
-            }
-
-          }
-          if(conf.loading){
-            conf.loadFun(false)
-          }
-          console.log('['+(new Date()-stime)+'ms]'+request_url,res.data);
-          return res.data;
-        }catch (e){
-          return res.data;
-        }
-    },
   /**
    * 刷新当前页面
     * @param flag
@@ -336,63 +221,20 @@ module.exports = {
       }
 
   },
-
-  async cloud(param,fouce=false){
-    let conf={...this._config.request,...param};
-    let request_url=this.http_build_query(param.data||{},param.apiName);
-    let cache_key=request_url;
-    if(fouce=='clear' || fouce=='clean'){
-      return this.promise('wx.removeStorage',{key:cache_key})
+  /**
+   * @param str
+   * @returns {string}
+   */
+  mdx(str){
+    if(typeof str!='string'){
+      str=JSON.stringify(str);
     }
-    let cache_data=false;
-    if(!fouce && (param.cachetime>0 || param.cachetime==-1)){//从缓存中获取
-      try {
-        cache_data = await this.cache(cache_key)
-        if (cache_data) {
-          if (typeof cache_data == 'object') {
-            cache_data.isCache = true;
-          }
-          if (conf.loading) {
-            conf.loadFun(false)
-          }
-          console.log(request_url, cache_data);
-          return cache_data;
-        }
-      } catch (e) {
-        console.log('cache_data', e)
-      }
-    }
-    try{
-      param.data=param.data||{}
-      if(conf.hasBodyFormids) {//body// 携带 formids
-        conf.hasBodyFormids=conf.hasBodyFormids===true?'formids':conf.hasBodyFormids;
-        let formids=await this.cache('formids');
-        param.data[conf.hasBodyFormids]=formids
-      }
-      let res=await wx.cloud.callFunction({
-        name:param.apiName,
-        data:param.data,
-      });
-      if(res.result && (param.cachetime>0 || param.cachetime==-1)){
-        this.cache(cache_key,res.result,param.cachetime)
-      }
-      if(conf.loading){
-        conf.loadFun(false)
-      }
-      console.log(request_url,res.result,param);
-      return res.result;
-    }catch (e){
-      console.log(e);
-    }
-  },
-  //strkey
-  str2key(str){
     let num=0;
     let len=str.length;
     for(let i=0;i<len;i++){
       num+=(i+1)*str.charCodeAt(i);
     }
-    return num;
+    return 'md'+num;
   }
 }
 
