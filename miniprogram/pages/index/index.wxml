@@ -5,7 +5,8 @@
         <view class="upload {{item?'':'add'}}" style="background-image: url('{{item.path}}')"></view>
     </qnupload>
 </block>
-<qnupload qnConf="{{qnConf}}" upConf="{{upConf}}"
+<qnupload wx:if="{{hasAddFile}}"
+        qnConf="{{qnConf}}" upConf="{{upConf}}"
           file="{{item}}" files="{{files}}"
           bindevent="qnevent" class="qnupload">
     <view class="upload add"></view>

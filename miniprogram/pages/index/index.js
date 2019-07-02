@@ -19,6 +19,7 @@ Page({
         current:0,
       }
     ],
+    hasAddFile:true,
   },
   onLoad: function() {
     plugin.getOpenid().then(res=>{
@@ -37,6 +38,7 @@ Page({
     console.log('qnevent',e.detail);
     this.setData({
       files:e.detail.data,
+      hasAddFile:e.detail.data.length<this.data.upConf.count
     })
   }
 })
