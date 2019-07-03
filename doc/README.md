@@ -3,6 +3,14 @@
 代码地址 https://github.com/myzingy/wx-plugin-oxoo.git    
 一些交互逻辑 https://www.processon.com/view/link/5d131b73e4b043f329a550a2  
 你也可以将此插件部署在你的小程序插件里，为大家提供便捷
+
+## 优点
+    1. 预处理图片，支持20m以上的大图片文件  
+        七牛实时图片处理接口，只支持20m内的文件，会引起图片无法加载的情况；
+        这里的上传策略对每张图都做了imageslim（图片瘦身）预处理，接就是上传到七牛是2张图；
+        第一张原图，如  http://qn.you.com/original.jpg
+        第二张为瘦身图 ，为 http://qn.you.com/original.jpg.lim.jpg 其中 .lim.jpg 为固定格式
+        通常使用可以使用lim.jpg,加速访问、降低流量；下载原图时再用原图地址   
 ##使用
 ```
 1，小程序后台添加插件
