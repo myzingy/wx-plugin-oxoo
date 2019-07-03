@@ -76,7 +76,7 @@ Component({
         prefixPath+='/';
       }
       this.files[this.upConfGroup][fileIndex].progress=Math.random()*20+10;
-      console.log('wx.uploadFile.file',file,filename);
+      console.log('wx.uploadFile.file',this.files[this.upConfGroup][fileIndex],filename);
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       util.promise('wx.uploadFile',{
         url:cloud.getUploadPath(this.data.qnConf.region),
@@ -89,6 +89,7 @@ Component({
           token:token,
           'x:userpath':prefixPath,
           'x:filename':filename,
+          'x:filesize':this.files[this.upConfGroup][fileIndex].size
         }
       }).then(res=>{
         console.log('wx.uploadFile.success',res);
