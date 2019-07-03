@@ -1,5 +1,23 @@
 import cloud from '../../api/cloud'
 import util from '../../api/util'
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length);
+  var bufView = new Uint8Array(buf);
+  for (var i=0, strLen=str.length; i<strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+const base64ToUrlSafe = function(v) {
+  return v.replace(/\//g, '_').replace(/\+/g, '-');
+};
+
+const urlsafeBase64Encode = function(jsonFlags) {
+  console.log('urlsafeBase64Encode',jsonFlags);
+  //var encoded = new Buffer(jsonFlags).toString('base64');
+  const base64 = wx.arrayBufferToBase64(str2ab(jsonFlags))
+  return base64ToUrlSafe(base64);
+};
 Component({
   properties:{
     /**
@@ -77,19 +95,24 @@ Component({
       }
       this.files[this.upConfGroup][fileIndex].progress=Math.random()*20+10;
       console.log('wx.uploadFile.file',this.files[this.upConfGroup][fileIndex],filename);
+      console.log('urlsafeBase64Encode',urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'));
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+
+
       util.promise('wx.uploadFile',{
         url:cloud.getUploadPath(this.data.qnConf.region),
         filePath:file,
         name: 'file',
         header: {
           //"Content-Type": "multipart/form-data"
+          //"Content-Type":"application/x-www-form-urlencoded",
         },
         formData:{
           token:token,
           'x:userpath':prefixPath,
           'x:filename':filename,
-          'x:filesize':this.files[this.upConfGroup][fileIndex].size
+          'x:filesize':this.files[this.upConfGroup][fileIndex].size,
+          'x:limkey':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
         }
       }).then(res=>{
         console.log('wx.uploadFile.success',res);
@@ -105,6 +128,7 @@ Component({
       })
     },
     changeFile(e){
+      //return console.log(urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg'))
       let count=this.data.upConf.count||1;
       let nowCount=this.files[this.upConfGroup].length;
       let fileCurrent=0

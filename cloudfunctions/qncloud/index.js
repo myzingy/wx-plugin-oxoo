@@ -9,6 +9,12 @@ exports.main = async (event, context) => {
     case 'token':
       return getToken(event);
       break;
+    case 'test':
+      //fotoo:prefixPath/md477040.jpeg.lim.jpg
+      //ZgBvAHQAbwBvADoAcAByAGUAZgBpAHgAUABhAHQAaAAvAG0AZAA0ADcANwAwADQAMAAuAGoAcABlAGcALgBsAGkAbQAuAGoAcABnAA==
+      var base64 = qiniu.util.urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg');
+      return base64 //Zm90b286cHJlZml4UGF0aC9tZDQ3NzA0MC5qcGVnLmxpbS5qcGc=
+      break;
   }
 }
 
@@ -18,7 +24,7 @@ function getToken(params){
   if(params.accessKey && params.secretKey && params.bucket){
     let returnBody
     if(params.fileType=='image'){
-      returnBody='{"key":"$(key).lim.jpg","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":$(imageAve)}'
+      returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":$(imageAve)}'
     }else{
       returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)"}'
     }
@@ -30,8 +36,10 @@ function getToken(params){
       returnBody: returnBody
     }
     //图片瘦身
-    var base64 = qiniu.util.urlsafeBase64Encode(params.bucket+':'+params['x:userpath']+params['x:filename']+'.lim.jpg');
-    options.persistentOps='imageslim|saveas/'+base64
+    var base64 = qiniu.util.urlsafeBase64Encode(params.bucket+':'+'lim.jpg');
+    //options.persistentOps='imageslim|saveas/'+base64
+    options.persistentOps='imageslim|saveas/$(x:limkey)'
+    //options.persistentOps='imageslim|saveas/'+base64
 
     var putPolicy = new qiniu.rs.PutPolicy(options);
     let token=putPolicy.uploadToken(mac);
