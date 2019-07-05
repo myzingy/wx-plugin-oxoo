@@ -11,7 +11,6 @@
           bindevent="qnevent" class="qnupload">
     <view class="upload add"></view>
 </qnupload>
-
 <view class="block">
     <view class="block-title">再来一组(通过 upConf.group 区分)</view>
     <block wx:for="{{files2}}" wx:key="files.key">
@@ -28,7 +27,7 @@
         <view class="upload add"></view>
     </qnupload>
 </view>
-
+<button type="primary" style="width: 90%;margin: 0 auto" bindtap="previewImage" >图片预览组件</button>
 <view class="block">
     <view class="block-title">插件使用</view>
     <view>1. 使用组件方式引入，配置好组件参数即可</view>
@@ -39,3 +38,17 @@
     <view class="block-title">通过接口获得七牛token</view>
     <textarea value="{{token}}" style="width: 100%"></textarea>
 </view>
+<previewImage urls="{{urls}}" current="{{current}}"
+              hasHidden="{{hasHidden}}" bindevent="previewEvent">
+    <view class="image-info-view">
+        <view class="image-info-close" bindtap="previewHide">X</view>
+        <view class="image-info">
+            <block wx:for="{{urls}}" wx:key="urls.key">
+                <view wx:if="{{currentIndex==index}}">
+                    <view>index:{{index}}</view>
+                    <view>url:{{item}}</view>
+                </view>
+            </block>
+        </view>
+    </view>
+</previewImage>

@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "qnupload": "plugin://myPlugin/qnupload"
+    "qnupload": "plugin://myPlugin/qnupload",
+    "previewImage": "plugin://myPlugin/previewImage"
   }
 }

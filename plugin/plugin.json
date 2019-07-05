@@ -1,6 +1,7 @@
 {
   "publicComponents": {
-    "qnupload": "components/qiniu/upload"
+    "qnupload": "components/qiniu/upload",
+    "previewImage": "components/image/preview"
   },
   "main": "index.js"
 }

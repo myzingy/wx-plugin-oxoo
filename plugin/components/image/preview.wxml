@@ -1,0 +1,24 @@
+<!--plugin/components/image/proview.wxml-->
+<view class="proviewimage-view" hidden="{{hasHidden}}">
+    <view class="proviewimage">
+        <swiper indicator-dots="{{hasDots}}" indicator-color="#666" indicator-active-color="#fff"
+                style="height: {{height}}px; width: {{width}}px;"
+                autoplay="{{false}}" interval="{{interval}}"
+                current="{{swiperCurrent}}"
+                duration="500" bindchange="swiperChange">
+            <block wx:for="{{urls}}" wx:key="urls.key">
+                <swiper-item>
+                    <movable-area style="height: {{height}}px; width: {{width}}px;">
+                        <movable-view
+                                class="proviewimage-movable"
+                                style="height: {{height}}px; width: {{width}}px; background-image:url('{{item}}');"
+                                direction="all" inertia out-of-bounds scale scale-min="1" scale-max="10">
+                        </movable-view>
+                    </movable-area>
+                </swiper-item>
+            </block>
+        </swiper>
+        <slot></slot>
+    </view>
+</view>
+

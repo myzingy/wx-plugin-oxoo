@@ -47,3 +47,31 @@
     border-bottom: 2rpx solid #ccc;
     margin-bottom: 30rpx;
 }
+
+.image-info-view{
+    position: fixed;
+    color: #fff;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.image-info-close{
+    position: fixed;
+    color: #fff;
+    bottom: 20rpx;
+    right: 20rpx;
+    width: 100rpx;
+    height: 100rpx;
+    background-color: rgba(200,200,0,0.7);
+    border-radius: 100%;
+    line-height: 100rpx;
+    text-align: center;
+    font-size: 100rpx;
+    overflow: hidden;
+}
+.image-info{
+    width: calc(100% - 80rpx);
+    padding: 100rpx 40rpx;
+    word-break:break-all;
+    background-color: rgba(200,200,0,0.7);
+}

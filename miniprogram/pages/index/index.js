@@ -25,6 +25,9 @@ Page({
     },
     files2:[],
     hasAddFile2:true,//出现上传加号
+
+    hasHidden:true,//图片预览
+    currentIndex:0,
   },
   onLoad: function() {
     console.log(plugin)
@@ -42,6 +45,7 @@ Page({
         token:res,
       })
     })
+    //this.previewImage()
   },
   qnevent(e){
     console.log('qnevent',e.detail);
@@ -56,5 +60,27 @@ Page({
       files2:e.detail.data,
       hasAddFile2:e.detail.data.length<this.data.upConf2.count
     })
-  }
+  },
+  previewImage(){
+    this.setData({
+      urls:[
+        'http://qn001.pfotoo.com/prefixPath/md463266.jpg.lim.jpg?1',
+        'http://qn001.pfotoo.com/prefixPath/md464209.jpg.lim.jpg?1',
+      ],
+      current:'http://qn001.pfotoo.com/prefixPath/md463266.jpg.lim.jpg?1',
+      hasHidden:false,
+    })
+  },
+  previewEvent(e){
+    console.log('previewEvent(e)',e)
+    this.setData({
+      currentIndex:e.detail.data.current
+    })
+  },
+  previewHide(){
+    this.setData({
+      currentIndex:0,
+      hasHidden:true,
+    })
+  },
 })
