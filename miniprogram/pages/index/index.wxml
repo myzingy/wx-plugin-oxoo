@@ -36,7 +36,7 @@
 
 <view class="block">
     <view class="block-title">通过接口获得七牛token</view>
-    <textarea value="{{token}}" style="width: 100%"></textarea>
+    <view style="width: 100%;word-break:break-all;">{{token}}</view>
 </view>
 <previewImage urls="{{urls}}" current="{{current}}"
               hasHidden="{{hasHidden}}" bindevent="previewEvent">
