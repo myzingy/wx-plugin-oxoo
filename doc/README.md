@@ -104,9 +104,9 @@ qnupload | 直接配置七牛AK、SK，即可实现上传
       domain:'http://xxx.xxxx.com',//你绑定的域名,非必填项
     },
     upConf:{
-      prefixPath:'prefixPath',//上传到七牛后有一个路径前缀，可为空；（还会自动强制带一个日期前缀）
+      prefixPath:'prefixPath',//上传到七牛后有一个路径前缀，可为空；
       count:3,//文件数量
-      loading:'leaf',// none|leaf|circle|ring, def leaf 上传的loading效果，none为无，可自行在page wxml中添加
+      loading:'leaf',// none|leaf|circle|ring, def leaf 上传的loading效果; none为无，可自行在page wxml中添加
       group:'def', 一个页面上多个组件的区分标识
       
     },

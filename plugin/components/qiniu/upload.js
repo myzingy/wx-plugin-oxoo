@@ -163,7 +163,6 @@ Component({
         sourceType:['album'],
         success:res=>{
           console.log('wx.chooseImage',res);
-          this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
           if(hasEdit){
             this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
             this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
@@ -177,6 +176,7 @@ Component({
               this.uploadFile(f.path,fi)
             })
           }
+          this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
         }
       })
     },

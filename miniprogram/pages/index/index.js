@@ -13,13 +13,7 @@ Page({
       prefixPath:'prefixPath',
       count:3,
     },
-    files:[
-      {
-        path:'https://qn.colorcun.com/prefixPath/2019-06-28/443695.png',
-        progress:50,
-        current:0,
-      }
-    ],
+    files:[],
     hasAddFile:true,//出现上传加号
     token:'',//七牛token
 
@@ -29,13 +23,7 @@ Page({
       group:'222',
       loading:'ring',
     },
-    files2:[
-      {
-        path:'https://qn.colorcun.com/prefixPath/2019-06-28/443695.png',
-        progress:50,
-        current:0,
-      }
-    ],
+    files2:[],
     hasAddFile2:true,//出现上传加号
   },
   onLoad: function() {
