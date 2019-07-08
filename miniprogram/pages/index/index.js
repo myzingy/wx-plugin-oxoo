@@ -28,6 +28,8 @@ Page({
 
     hasHidden:true,//图片预览
     currentIndex:0,
+
+    fsm:wx.getFileSystemManager(),
   },
   onLoad: function() {
     console.log(plugin)

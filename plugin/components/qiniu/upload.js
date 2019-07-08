@@ -1,5 +1,6 @@
 import cloud from '../../api/cloud'
 import util from '../../api/util'
+import SparkMD5 from '../../miniprogram_npm/spark-md5/index'
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length);
   var bufView = new Uint8Array(buf);
@@ -55,6 +56,13 @@ Component({
     files:{
       type:Array,
       value:[],
+    },
+    /**
+     * wx.getFileSystemManager
+     */
+    fsm:{
+      type:Object,
+      value:null,
     }
 
   },
@@ -164,23 +172,91 @@ Component({
         sourceType:['album'],
         success:res=>{
           console.log('wx.chooseImage',res);
+          let hasUploadBlock=this.data.fsm?true:false;
           if(hasEdit){
             this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
             this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
-            this.uploadFile(res.tempFiles[0].path,fileCurrent)
+            if(hasUploadBlock){
+              this.uploadFileBlock(res.tempFiles[0],fileCurrent)
+            }else{
+              this.uploadFile(res.tempFiles[0].path,fileCurrent)
+            }
           }else{
             res.tempFiles.forEach((f,fi)=>{
               f.current=nowCount+fi;
               this.files[this.upConfGroup].push(f)
             })
             this.files[this.upConfGroup].forEach((f,fi)=>{
-              this.uploadFile(f.path,fi)
+              if(hasUploadBlock){
+                this.uploadFileBlock(f,fileCurrent)
+              }else {
+                this.uploadFile(f.path, fi)
+              }
             })
           }
           this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
         }
       })
     },
-  },
+    /***
+     * 分块上传
+     * @param file
+     * @param fileIndex
+     * @returns {Promise.<void>}
+     */
+    async uploadFileBlock(file,fileIndex=0){
+      console.log('FileSystemManager',this.data.fsm)
+      let fsm=this.data.fsm
+      let ab_val=fsm.readFileSync(file.path);
+      let chunkSize = 1024*1024*4 //4m
+      let chunks = Math.ceil(file.size / chunkSize)
+      let token=await cloud.getTokenQiniu(this.data.qnConf)
+      console.log('chunks',chunks,ab_val.byteLength)
+      for(let x=0;x<chunks;x++){
+        let posend=x*chunkSize+chunkSize
+        let tmp_ab=ab_val.slice(x*chunkSize,x>=chunks-1?ab_val.byteLength:posend);
+        let res=await this.mkblk(token,tmp_ab);
+        console.log('this.mkblk.res'+x,ab_val.byteLength,tmp_ab.byteLength);
+      }
+      /*
+      this.mkfile().then(res=>{
+        console.log('this.mkblk.res',res);
+      })
+      */
+    },
 
+    mkblk(token,ab_val){
+      return new Promise(function(success,fail){
+        wx.request({
+          url:cloud.getUploadPath(this.data.qnConf.region)+'/mkblk/'+ab_val.byteLength,
+          header: {
+            "Content-Type":"application/octet-stream",
+            "Content-Length": ab_val.byteLength,
+            Authorization:token,
+          },
+          method:'POST',
+          data:{
+            firstChunkBinary:ab_val,
+          },
+          success:(res)=>{
+            success(res)
+          },
+          fail:(res)=>{
+            fail(res)
+          },
+        })
+      });
+    },
+    mkfile(path='mkfile',token,ctx){
+      return util.promise('wx.request',{
+        url:cloud.getUploadPath(this.data.qnConf.region)+path,
+        header: {
+          "Content-Type":"text/plain",
+          "Content-Length": ctx.length,
+          Authorization:token,
+        },
+        data:ctx
+      });
+    },
+  }
 })
