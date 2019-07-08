@@ -80,7 +80,8 @@ Component({
   },
   methods:{
     async uploadFile(file,fileIndex=0){
-      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('http://tmp')<0) return;//已上传
+      console.log('uploadFile',this.files[this.upConfGroup][fileIndex])
+      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('://tmp')<0) return;//已上传
       if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].progress==100) return;//已上传
       let token=await cloud.getTokenQiniu(this.data.qnConf)
       let filename=file.split('.');
