@@ -4,7 +4,7 @@
 一些交互逻辑 https://www.processon.com/view/link/5d131b73e4b043f329a550a2  
 你也可以将此插件部署在你的小程序插件里，为大家提供便捷
 
-## 优点
+# 优点
     1. 预处理图片，支持20m以上的大图片文件  
         七牛实时图片处理接口，只支持20m内的文件，会引起图片无法加载的情况；
         这里的上传策略对每张图都做了imageslim（图片瘦身）预处理，接就是上传到七牛是2张图；
@@ -24,7 +24,7 @@
 ```
 插件市场（最新版本号）  
 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wxd3dc4206c76f14fc  
-## 组件  
+# 组件  
 组件 | 描述  
 ---------------- | --------------  
 qnupload | 直接配置七牛AK、SK，即可实现上传  
@@ -32,8 +32,8 @@ qnupload | 直接配置七牛AK、SK，即可实现上传
    
   
 
-##### 七牛上传组件 
-##### 建议参考 github miniprogram 中的示例，更加完善  
+## 七牛上传组件 
+    建议参考 github miniprogram 中的示例，更加完善  
 + Page json文件
 ````
 "usingComponents": {
@@ -123,7 +123,7 @@ qnupload | 直接配置七牛AK、SK，即可实现上传
       },
 ````
 
-## 插件helper函数
+# 插件helper函数
 插件提供一些常用函数，方便开发使用，在任意 js 引入即可调用
 ````javascript
 var vktool = requirePlugin("vktool")
