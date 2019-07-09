@@ -25,5 +25,9 @@ https://github.com/myzingy/wx-plugin-oxoo/blob/master/doc/README.md
 
 ![链接](./doc/ex1.png)
 
+## 示例小程序
+
+    微信小程序搜索 oxcc  
+
 
 
