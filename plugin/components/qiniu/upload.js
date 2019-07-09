@@ -168,7 +168,7 @@ Component({
       }
       wx.chooseImage({
         count:hasEdit?1:(count-nowCount),
-        sizeType:['compressed'],
+        sizeType:['original'],
         sourceType:['album'],
         success:res=>{
           console.log('wx.chooseImage',res);
@@ -226,18 +226,16 @@ Component({
     },
 
     mkblk(token,ab_val){
-      return new Promise(function(success,fail){
+      return new Promise((success,fail)=>{
         wx.request({
           url:cloud.getUploadPath(this.data.qnConf.region)+'/mkblk/'+ab_val.byteLength,
           header: {
             "Content-Type":"application/octet-stream",
-            "Content-Length": ab_val.byteLength,
+            //"Content-Length": ab_val.byteLength,
             Authorization:token,
           },
           method:'POST',
-          data:{
-            firstChunkBinary:ab_val,
-          },
+          data:ab_val,
           success:(res)=>{
             success(res)
           },
