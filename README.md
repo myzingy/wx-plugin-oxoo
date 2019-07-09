@@ -4,7 +4,8 @@
     实现七牛云上传，你不用关心 token 策略，直接使用 ak、sk；
     你不用关心大图片（超过20m）的问题，已帮你做了瘦身处理，链接后增加.lim.jpg
     todo:
-        分片上传等等  
+        分片上传(目前插件没有 FileSystemManager 权限，插件无法读取内容)
+        编辑器上已跑通分片上传给七牛，可以参考  plugin/components/qiniu/upload.js 中 uploadFileBlock 函数
 ### 为什么做这样一个插件？
     1. 上传到七牛都需依赖服务端生成 token，为了省去这些重复的劳动；
     2. 七牛与小程序间的交互独立完成，由前端开发把控；
