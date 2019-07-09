@@ -1,6 +1,5 @@
 import cloud from '../../api/cloud'
 import util from '../../api/util'
-import SparkMD5 from '../../miniprogram_npm/spark-md5/index'
 const chunkSize = 1024*1024*4 //4m
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length);

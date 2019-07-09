@@ -37,12 +37,11 @@ function getToken(params){
       forceSaveKey:true,
       returnBody: returnBody
     }
-    //图片瘦身
-    var base64 = qiniu.util.urlsafeBase64Encode(params.bucket+':'+'lim.jpg');
-    //options.persistentOps='imageslim|saveas/'+base64
-    options.persistentOps='imageslim|saveas/$(x:limkey)'
-    //options.persistentOps='imageslim|saveas/'+base64
-
+    if(params.fileType=='image') {
+      //图片瘦身另存为lim
+      var base64 = qiniu.util.urlsafeBase64Encode(params.bucket + ':' + 'lim.jpg');
+      options.persistentOps = 'imageslim|saveas/$(x:limkey)'
+    }
     var putPolicy = new qiniu.rs.PutPolicy(options);
     let token=putPolicy.uploadToken(mac);
     if(token){
