@@ -2,5 +2,10 @@
   <slot></slot>
   <view
           wx:if="{{upConf.loading!='none'}}"
-          class="upload-mask animation {{upConf.loading}}" wx:if="{{file.progress>0 && file.progress<100}}"></view>
+          class="upload-mask animation {{upConf.loading}}" wx:if="{{file.progress>=0 && file.progress<100}}"></view>
+  <view
+          wx:if="{{upConf.loading!='none'}}"
+          class="upload-mask-text" wx:if="{{file.progress>=0 && file.progress<100}}">
+    {{file.progress}}%
+  </view>
 </view>

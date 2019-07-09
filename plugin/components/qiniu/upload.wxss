@@ -4,7 +4,7 @@
     height: 100%;
 }
 
-.upload-mask{
+.upload-mask,.upload-mask-text{
     position: absolute;
     width: 60rpx;
     height: 60rpx;
@@ -12,6 +12,13 @@
     right:calc(50% - 30rpx);
     background: linear-gradient(to bottom right,rgba(255,255,0,0.7),rgba(0,200,0,0.7));
     border-radius: 0 100% 0 100%;
+    font-size: 24rpx;
+    line-height: 60rpx;
+    text-align: center;
+    color: #fefefe;
+}
+.upload-mask-text{
+    background: none;
 }
 .upload-mask.circle{
     border-radius: 100%;

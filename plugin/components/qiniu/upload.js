@@ -1,6 +1,7 @@
 import cloud from '../../api/cloud'
 import util from '../../api/util'
 import SparkMD5 from '../../miniprogram_npm/spark-md5/index'
+const chunkSize = 1024*1024*4 //4m
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length);
   var bufView = new Uint8Array(buf);
@@ -102,7 +103,7 @@ Component({
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
         prefixPath+='/';
       }
-      this.files[this.upConfGroup][fileIndex].progress=Math.random()*20+10;
+      this.files[this.upConfGroup][fileIndex].progress=parseInt(Math.random()*20+10);
       console.log('wx.uploadFile.file',this.files[this.upConfGroup][fileIndex],filename);
       console.log('urlsafeBase64Encode',urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'));
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
@@ -172,10 +173,11 @@ Component({
         sourceType:['album'],
         success:res=>{
           console.log('wx.chooseImage',res);
-          let hasUploadBlock=this.data.fsm?true:false;
+          let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
           if(hasEdit){
             this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
             this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
+            this.files[this.upConfGroup][fileCurrent].progress=0
             if(hasUploadBlock){
               this.uploadFileBlock(res.tempFiles[0],fileCurrent)
             }else{
@@ -184,11 +186,12 @@ Component({
           }else{
             res.tempFiles.forEach((f,fi)=>{
               f.current=nowCount+fi;
+              f.progress=0;
               this.files[this.upConfGroup].push(f)
             })
             this.files[this.upConfGroup].forEach((f,fi)=>{
-              if(hasUploadBlock){
-                this.uploadFileBlock(f,fileCurrent)
+              if(hasUploadBlock && f.size > chunkSize){
+                this.uploadFileBlock(f,fi)
               }else {
                 this.uploadFile(f.path, fi)
               }
@@ -206,23 +209,64 @@ Component({
      */
     async uploadFileBlock(file,fileIndex=0){
       console.log('FileSystemManager',this.data.fsm)
+      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('://tmp')<0) return;//已上传
+      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].progress==100) return;//已上传
+      this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+
       let fsm=this.data.fsm
       let ab_val=fsm.readFileSync(file.path);
-      let chunkSize = 1024*1024*4 //4m
+      let ab_val_length=ab_val.byteLength
       let chunks = Math.ceil(file.size / chunkSize)
       let token=await cloud.getTokenQiniu(this.data.qnConf)
-      console.log('chunks',chunks,ab_val.byteLength)
+      console.log('chunks',chunks,ab_val_length)
+      let ctx=[];
       for(let x=0;x<chunks;x++){
         let posend=x*chunkSize+chunkSize
-        let tmp_ab=ab_val.slice(x*chunkSize,x>=chunks-1?ab_val.byteLength:posend);
-        let res=await this.mkblk(token,tmp_ab);
-        console.log('this.mkblk.res'+x,ab_val.byteLength,tmp_ab.byteLength);
+        let tmp_ab=ab_val.slice(x*chunkSize,x>=chunks-1?ab_val_length:posend);
+        /* res
+        checksum: "o_hfT-1tmqMjv75bKPAhE1iXJJ4="
+        crc32: 2498270954
+        ctx: "gNb9-Mlry_LxyElhL6dM5wFPErTo6p2vFV2g3GpCvY2BaoRb_gFyJxwTLH4nAACFywQFcZJ9f6_yr0KddSZw1cO1ueeXdm0OYz1HocDHNeeajHcQTNKv3SeD0685r1bXMurhMnjjH-elea6jJAIAAADCWyAAAAAAAMJbIADCWyAAMjVRQUFIVDVJMTNDaEJZQQ=="
+        expired_at: 1563159627
+        host: "http://upload.qiniup.com"
+        offset: 2120642
+        */
+        try{
+          let res=await this.mkblk(token,tmp_ab);
+          ctx.push(res.data.ctx)
+          console.log('this.mkblk.res'+x,res);
+          this.files[this.upConfGroup][fileIndex].progress=parseInt(100*(x/chunks));
+          this.triggerEvent('event',{act:'uploadProgress',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        }catch (e){
+          x--;
+        }
+
       }
-      /*
-      this.mkfile().then(res=>{
-        console.log('this.mkblk.res',res);
+      let filename=file.path.split('.');
+      if(filename[filename.length-1].length<5){
+        filename=util.mdx(file.path)+'.'+filename[filename.length-1]
+      }else{
+        filename=util.mdx(file.path)
+      }
+      let prefixPath=this.data.upConf.prefixPath?this.data.upConf.prefixPath:'';
+      if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
+        prefixPath+='/';
+      }
+
+      let path='/mkfile/'+ab_val_length
+        +'/x:userpath/'+urlsafeBase64Encode(prefixPath)
+        +'/x:filename/'+urlsafeBase64Encode(filename)
+        +'/x:filesize/'+urlsafeBase64Encode(ab_val_length+"")
+        +'/x:limkey/'+urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg')
+      console.log(path);
+      this.mkfile(path,token,ctx).then(res=>{
+        console.log('this.mkblk.res',res.data);
+        this.files[this.upConfGroup][fileIndex].progress=100;
+        let remote=res.data;
+        remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
+        this.files[this.upConfGroup][fileIndex].remote=remote
+        this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       })
-      */
     },
 
     mkblk(token,ab_val){
@@ -232,7 +276,7 @@ Component({
           header: {
             "Content-Type":"application/octet-stream",
             //"Content-Length": ab_val.byteLength,
-            Authorization:token,
+            Authorization:"UpToken "+token,
           },
           method:'POST',
           data:ab_val,
@@ -246,14 +290,23 @@ Component({
       });
     },
     mkfile(path='mkfile',token,ctx){
-      return util.promise('wx.request',{
-        url:cloud.getUploadPath(this.data.qnConf.region)+path,
-        header: {
-          "Content-Type":"text/plain",
-          "Content-Length": ctx.length,
-          Authorization:token,
-        },
-        data:ctx
+      return new Promise((success,fail)=>{
+        wx.request({
+          url:cloud.getUploadPath(this.data.qnConf.region)+path,
+          header: {
+            "Content-Type":"text/plain",
+            //"Content-Length": ctx.length,
+            Authorization:"UpToken "+token,
+          },
+          data:ctx.join(","),
+          method:'POST',
+          success:(res)=>{
+            success(res)
+          },
+          fail:(res)=>{
+            fail(res)
+          },
+        })
       });
     },
   }

@@ -29,8 +29,10 @@ function getToken(params){
       returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)"}'
     }
     var mac = new qiniu.auth.digest.Mac(params.accessKey, params.secretKey);
+    console.log("\r\ndeadline",parseInt(new Date()/1000+86400),"\r\n")
     var options = {
       scope: params.bucket,
+      deadline: parseInt(new Date()/1000+86400),
       saveKey:'$(x:userpath)'+'$(x:filename)',
       forceSaveKey:true,
       returnBody: returnBody
