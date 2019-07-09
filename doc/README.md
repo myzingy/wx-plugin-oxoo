@@ -27,12 +27,13 @@ https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wxd3dc4206
 # 组件  
 组件 | 描述  
 ---------------- | --------------  
-qnupload | 直接配置七牛AK、SK，即可实现上传  
+qnupload | 直接配置七牛AK、SK，即可实现上传   
+previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可以加
 
    
   
 
-## 七牛上传组件 
+### 七牛上传组件  qnupload
     建议参考 github miniprogram 中的示例，更加完善  
 + Page json文件
 ````
@@ -122,6 +123,10 @@ qnupload | 直接配置七牛AK、SK，即可实现上传
         })
       },
 ````
+
+### 图片预览组件 previewImage
+    与 wx.previewImage 功能相同，可以放大、滑动切换；最主要功能是可以写个 view 放在图片上，想放啥都行
+    建议参考 github miniprogram 中的示例，这里不再复述
 
 # 插件helper函数
 插件提供一些常用函数，方便开发使用，在任意 js 引入即可调用
