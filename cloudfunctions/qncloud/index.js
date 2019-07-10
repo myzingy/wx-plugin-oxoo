@@ -39,7 +39,6 @@ function getToken(params){
     }
     if(params.fileType=='image') {
       //图片瘦身另存为lim
-      var base64 = qiniu.util.urlsafeBase64Encode(params.bucket + ':' + 'lim.jpg');
       options.persistentOps = 'imageslim|saveas/$(x:limkey)'
     }
     var putPolicy = new qiniu.rs.PutPolicy(options);

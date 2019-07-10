@@ -256,7 +256,7 @@ Component({
         +'/x:userpath/'+urlsafeBase64Encode(prefixPath)
         +'/x:filename/'+urlsafeBase64Encode(filename)
         +'/x:filesize/'+urlsafeBase64Encode(ab_val_length+"")
-        +'/x:limkey/'+urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg')
+        +'/x:limkey/'+urlsafeBase64Encode(urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'))
       console.log(path);
       this.mkfile(path,token,ctx).then(res=>{
         console.log('this.mkblk.res',res.data);

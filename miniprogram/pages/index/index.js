@@ -10,7 +10,7 @@ Page({
       domain:'http://qn001.pfotoo.com'
     },
     upConf:{
-      prefixPath:'prefixPath',
+      prefixPath:'mkblk',
       count:3,
     },
     files:[],
