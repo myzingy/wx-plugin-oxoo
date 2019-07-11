@@ -68,7 +68,7 @@ Component({
       })
     },
     imageLoaded(e){
-      //console.log('imageLoaded(e)',e)
+      console.log('imageLoaded(e)',e)
       let urlsLoaded=this.data.urlsLoaded;
       urlsLoaded[util.attr(e,'index')]=true;
       this.setData({
