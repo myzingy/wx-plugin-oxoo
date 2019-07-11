@@ -24,6 +24,7 @@ Component({
     /**
      * qnConf.accessKey
      * qnConf.secretKey
+     * qnConf.token
      * qnConf.bucket
      * qnConf.fileType image|video|audio|file def:file
      * qnConf.region 华东

@@ -99,6 +99,7 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
     qnConf:{
       accessKey:'七牛的accessKey',
       secretKey:'七牛的secretKey',
+      token:'不放心ak,sk,也可以传递七牛 token',
       bucket:'fotoo',//存储空间
       fileType:'image',//image|video|audio|file def:file
       region:'华东',//存储区域
@@ -108,7 +109,7 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
       prefixPath:'prefixPath',//上传到七牛后有一个路径前缀，可为空；
       count:3,//文件数量
       loading:'leaf',// none|leaf|circle|ring, def leaf 上传的loading效果; none为无，可自行在page wxml中添加
-      group:'def', 一个页面上多个组件的区分标识
+      group:'def', //一个页面上多个组件的区分标识
       
     },
     files:[], //组件数据放入这里展示到页面上
