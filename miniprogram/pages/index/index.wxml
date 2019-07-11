@@ -2,7 +2,8 @@
     <qnupload qnConf="{{qnConf}}" upConf="{{upConf}}"
               file="{{item}}" files="{{files}}" fsm="{{fsm}}"
               bindevent="qnevent" class="qnupload">
-        <view class="upload {{item?'':'add'}}" style="background-image: url('{{item.path}}')"></view>
+        <image wx:if="{{hasIphone}}" class="upload" src="{{item.path}}"></image>
+        <view wx:else="" class="upload" style="background-image: url('{{item.path}}')"></view>
     </qnupload>
 </block>
 <qnupload wx:if="{{hasAddFile}}"
@@ -17,7 +18,8 @@
         <qnupload qnConf="{{qnConf}}" upConf="{{upConf2}}"
                   file="{{item}}" files="{{files2}}"
                   bindevent="qnevent2" class="qnupload">
-            <view class="upload {{item?'':'add'}}" style="background-image: url('{{item.path}}')"></view>
+            <image wx:if="{{hasIphone}}" class="upload" src="{{item.path}}"></image>
+            <view wx:else="" class="upload" style="background-image: url('{{item.path}}')"></view>
         </qnupload>
     </block>
     <qnupload wx:if="{{hasAddFile2}}"

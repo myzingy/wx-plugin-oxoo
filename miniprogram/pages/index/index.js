@@ -30,6 +30,7 @@ Page({
     currentIndex:0,
 
     fsm:wx.getFileSystemManager(),
+    hasIphone:false,
   },
   onLoad: function() {
     console.log(plugin)
@@ -48,6 +49,10 @@ Page({
       })
     })
     //this.previewImage()
+    let sys=wx.getSystemInfoSync();
+    this.setData({
+      hasIphone:sys.system.toLowerCase().indexOf('ios')>-1,
+    })
   },
   qnevent(e){
     console.log('qnevent',e.detail);
