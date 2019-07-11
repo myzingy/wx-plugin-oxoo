@@ -6,6 +6,7 @@
     todo:
         分片上传(目前插件没有 FileSystemManager 权限，插件无法读取内容)
         编辑器上已跑通分片上传给七牛，可以参考  plugin/components/qiniu/upload.js 中 uploadFileBlock 函数
+        https://developers.weixin.qq.com/community/develop/doc/0004808af24458ef5ad829e175b800
 ### 为什么做这样一个插件？
     1. 上传到七牛都需依赖服务端生成 token，为了省去这些重复的劳动；
     2. 七牛与小程序间的交互独立完成，由前端开发把控；
