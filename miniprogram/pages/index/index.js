@@ -7,7 +7,7 @@ Page({
       bucket:'fotoo',
       fileType:'image',
       region:'华东',
-      domain:'http://qn001.pfotoo.com'
+      domain:'http://qn001.pfotoo.com',
     },
     upConf:{
       prefixPath:'mkblk',
@@ -17,8 +17,17 @@ Page({
     hasAddFile:true,//出现上传加号
     token:'',//七牛token
 
+    qnConf2:{
+      accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
+      secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
+      token:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ:4NUt3l_-rUltAw0f0XGYfFEq32k=:eyJyZXR1cm5Cb2R5Ijoie1wia2V5XCI6XCIkKGtleSlcIixcImJ1Y2tldFwiOlwiJChidWNrZXQpXCIsXCJtaW1lVHlwZVwiOlwiJChtaW1lVHlwZSlcIixcImZzaXplXCI6XCIkKGZzaXplKVwifSIsInNhdmVLZXkiOiIkKHg6dXNlcnBhdGgpJCh4OmZpbGVuYW1lKSIsInNjb3BlIjoiZm90b28iLCJkZWFkbGluZSI6MTU2MjgzMjM4MH0=',
+      bucket:'fotoo',
+      fileType:'file',
+      region:'华东',
+      domain:'http://qn001.pfotoo.com',
+    },
     upConf2:{
-      prefixPath:'prefixPath',
+      prefixPath:'ustoken',
       count:3,
       group:'222',
       loading:'ring',
@@ -41,7 +50,7 @@ Page({
       accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
       secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
       bucket:'fotoo',
-      fileType:'image',
+      fileType:'file',
     }).then(res=>{
       console.log(res);
       this.setData({

@@ -15,7 +15,7 @@
 <view class="block">
     <view class="block-title">再来一组(通过 upConf.group 区分)</view>
     <block wx:for="{{files2}}" wx:key="files.key">
-        <qnupload qnConf="{{qnConf}}" upConf="{{upConf2}}"
+        <qnupload qnConf="{{qnConf2}}" upConf="{{upConf2}}"
                   file="{{item}}" files="{{files2}}"
                   bindevent="qnevent2" class="qnupload">
             <image wx:if="{{hasIphone}}" class="upload" src="{{item.path}}"></image>
@@ -23,7 +23,7 @@
         </qnupload>
     </block>
     <qnupload wx:if="{{hasAddFile2}}"
-              qnConf="{{qnConf}}" upConf="{{upConf2}}"
+              qnConf="{{qnConf2}}" upConf="{{upConf2}}"
               file="{{item}}" files="{{files2}}"
               bindevent="qnevent2" class="qnupload">
         <view class="upload add"></view>
