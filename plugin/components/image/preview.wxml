@@ -7,13 +7,17 @@
                 current="{{swiperCurrent}}"
                 duration="500" bindchange="swiperChange">
             <block wx:for="{{urls}}" wx:key="urls.key">
-                <swiper-item>
+                <swiper-item class="swiper-item">
                     <movable-area style="height: {{height}}px; width: {{width}}px;">
                         <movable-view
                                 class="proviewimage-movable"
-                                style="height: {{height}}px; width: {{width}}px; background-image:url('{{item}}');"
+                                style="height: {{height}}px; width: {{width}}px;{{urlsLoaded[index]?('background-image:url(\"'+item+'\")'):''}};"
                                 direction="all" inertia out-of-bounds scale scale-min="1" scale-max="10">
                         </movable-view>
+                        <view class="loading-view" style="height: {{height}}px; width: {{width}}px;" hidden="{{urlsLoaded[index]}}">
+                            <image class="loading-image" src="{{item}}" bindload="imageLoaded" data-index="{{index}}"></image>
+                            <view class="loading animation"></view>
+                        </view>
                     </movable-area>
                 </swiper-item>
             </block>

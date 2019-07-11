@@ -64,12 +64,13 @@ Page({
     })
   },
   previewImage(){
+    let p1='https://qn001.pfotoo.com/oxcc/md147418.jpg.lim.jpg?x='+Math.random()
     this.setData({
       urls:[
-        'http://qn001.pfotoo.com/prefixPath/md463266.jpg.lim.jpg?1',
-        'http://qn001.pfotoo.com/prefixPath/md464209.jpg.lim.jpg?1',
+        p1,
+        'https://qn001.pfotoo.com/mkblk/md441234.jpg.lim.jpg?x='+Math.random(),
       ],
-      current:'http://qn001.pfotoo.com/prefixPath/md463266.jpg.lim.jpg?1',
+      current:p1,
       hasHidden:false,
     })
   },

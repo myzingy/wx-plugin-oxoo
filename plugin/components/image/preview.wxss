@@ -16,3 +16,55 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.swiper-item{
+    position: relative;
+}
+.loading-view .loading-image{
+    width: 1rpx;
+    height: 1rpx;
+    overflow: hidden;
+}
+.loading-view .loading{
+    background: linear-gradient(to bottom right,rgba(255,255,255,0.7),rgba(0,0,0,1));
+    border-radius: 100%;
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width:80rpx;
+    height: 80rpx;
+    margin: 500rpx auto 0;
+}
+.loading-view .loading:after{
+    content: "";
+    border-radius: 100%;
+    width:60rpx;
+    height: 60rpx;
+    background-color: rgba(0,0,0,1);
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 10rpx;
+}
+.animation{
+    animation:rotate 1.2s linear infinite;
+}
+@keyframes rotate
+{
+    25%{
+        transform:rotate(90deg);
+    }
+    50%{
+        transform:rotate(180deg);
+    }
+    75%{
+        transform:rotate(270deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
