@@ -27,7 +27,7 @@ https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wxd3dc4206
 # 组件  
 组件 | 描述  
 ---------------- | --------------  
-qnupload | 直接配置七牛AK、SK，即可实现上传   
+qnupload | 直接配置七牛AK、SK，即可实现上传；也支持你自行生成token   
 previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可以加
 
    

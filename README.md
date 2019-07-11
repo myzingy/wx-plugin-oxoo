@@ -1,8 +1,11 @@
 # vktool
 使用小程序云函数，为开发者提供更多便捷能力；  
 ### 这个插件主要功能是啥？
-    实现七牛云上传，你不用关心 token 策略，直接使用 ak、sk；
+    实现七牛云上传，你不用关心 token 策略，直接使用 ak、sk；也支持你自行生成 token；
     你不用关心大图片（超过20m）的问题，已帮你做了瘦身处理，链接后增加.lim.jpg
+    tips  
+        使用自行生成 token，需要在你的上传策略中处理lim.jpg，否则只能单纯上传资源
+        
     todo:
         分片上传(目前插件没有 FileSystemManager 权限，插件无法读取内容)
         编辑器上已跑通分片上传给七牛，可以参考  plugin/components/qiniu/upload.js 中 uploadFileBlock 函数
