@@ -128,6 +128,13 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
 ### 图片预览组件 previewImage
     与 wx.previewImage 功能相同，可以放大、滑动切换；最主要功能是可以写个 view 放在图片上，想放啥都行
     建议参考 github miniprogram 中的示例，这里不再复述
+````html
+<previewImage urls="{{urls}}" current="{{current}}" scaleMax="10"
+                  hasHidden="{{hasHidden}}" bindevent="previewEvent">
+                  ...
+                  </previewImage>
+````    
+
 
 # 插件helper函数
 插件提供一些常用函数，方便开发使用，在任意 js 引入即可调用
