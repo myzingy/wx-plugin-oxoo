@@ -36,9 +36,11 @@ Component({
     },
     /**
      * upConf.prefixPath 前置路径
-     * upConf.count  几个文件
+     * upConf.count  最多可以选择的图片张数
      * upConf.loading none|leaf|circle|ring, def leaf
      * upConf.group 一个页面上多个组件的区分标识
+     * upConf.sizeType ['original', 'compressed'] 所选的图片的尺寸
+     * upConf.sourceType ['album', 'camera'] 选择图片的来源
      */
     upConf:{
       type:Object,
@@ -169,8 +171,8 @@ Component({
       }
       wx.chooseImage({
         count:hasEdit?1:(count-nowCount),
-        sizeType:['original'],
-        sourceType:['album'],
+        sizeType:this.data.upConf.sizeType?this.data.upConf.sizeType:['original', 'compressed'],
+        sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
         success:res=>{
           console.log('wx.chooseImage',res);
           let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;

@@ -106,8 +106,10 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
       domain:'http://xxx.xxxx.com',//你绑定的域名,非必填项
     },
     upConf:{
-      prefixPath:'prefixPath',//上传到七牛后有一个路径前缀，可为空；
-      count:3,//文件数量
+      prefixPath:'mkblk', //上传到七牛后有一个路径前缀，可为空
+      count:3, //最多可以选择的图片张数
+      sizeType:['original'],  //['original', 'compressed'] 所选的图片的尺寸
+      sourceType:['album'], //['album', 'camera'] 选择图片的来源
       loading:'leaf',// none|leaf|circle|ring, def leaf 上传的loading效果; none为无，可自行在page wxml中添加
       group:'def', //一个页面上多个组件的区分标识
       

@@ -10,8 +10,10 @@ Page({
       domain:'http://qn001.pfotoo.com',
     },
     upConf:{
-      prefixPath:'mkblk',
-      count:3,
+      prefixPath:'mkblk', //上传到七牛后有一个路径前缀，可为空
+      count:3, //最多可以选择的图片张数
+      sizeType:['original'],  //['original', 'compressed'] 所选的图片的尺寸
+      sourceType:['album'], //['album', 'camera'] 选择图片的来源
     },
     files:[],
     hasAddFile:true,//出现上传加号
@@ -38,7 +40,7 @@ Page({
     hasHidden:true,//图片预览
     currentIndex:0,
 
-    fsm:wx.getFileSystemManager(),
+    fsm:wx.getFileSystemManager(),//分块上传依赖
     hasIphone:false,
   },
   onLoad: function() {
