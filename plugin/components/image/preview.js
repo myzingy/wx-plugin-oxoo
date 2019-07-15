@@ -40,6 +40,7 @@ Component({
   },
   observers: {
     'urls': function(urls) {
+      console.log('observers.urls',urls)
       let current=0;
       let urlsLoaded=[]
       this.data.urls.forEach((url,cu)=>{

@@ -78,11 +78,11 @@ Page({
     })
   },
   previewImage(){
-    let p1='https://qn001.pfotoo.com/oxcc/md147418.jpg.lim.jpg?x='+Math.random()
+    let p1='http://qn001.pfotoo.com/oxcc/md147418.jpg.lim.jpg?x='
     this.setData({
       urls:[
         p1,
-        'https://qn001.pfotoo.com/mkblk/md441234.jpg.lim.jpg?x='+Math.random(),
+        'http://qn001.pfotoo.com/mkblk/md441234.jpg.lim.jpg?x=',
       ],
       current:p1,
       hasHidden:false,
