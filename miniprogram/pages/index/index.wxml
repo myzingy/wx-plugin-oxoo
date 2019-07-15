@@ -40,7 +40,7 @@
     <view class="block-title">通过接口获得七牛token</view>
     <view style="width: 100%;word-break:break-all;">{{token}}</view>
 </view>
-<previewImage urls="{{urls}}" current="{{current}}"
+<previewImage urls="{{urls}}" current="{{current}}" scaleMax="2"
               hasHidden="{{hasHidden}}" bindevent="previewEvent">
     <view class="image-info-view">
         <view class="image-info-close" bindtap="previewHide">X</view>

@@ -16,7 +16,7 @@
                         <movable-view
                                 class="proviewimage-movable"
                                 style="height: {{height}}px; width: {{width}}px;background-image:url('{{item}}');"
-                                direction="all" inertia out-of-bounds scale scale-min="1" scale-max="10">
+                                direction="all" inertia out-of-bounds scale scale-min="1" scale-max="{{scaleMax}}">
                         </movable-view>
                     </movable-area>
                 </swiper-item>

@@ -16,6 +16,10 @@ Component({
     hasHidden:{
       type:Boolean,
       value:true,
+    },
+    scaleMax:{
+      type:Number,
+      value:10,
     }
   },
 
