@@ -7,8 +7,9 @@
         使用自行生成 token，需要在你的上传策略中处理lim.jpg，否则只能单纯上传资源
         
     todo:
-        分片上传(目前插件没有 FileSystemManager 权限，插件无法读取内容)
+        分片上传(目前插件没有 FileSystemManager 权限，可将 FileSystemManager 传递给插件)
         编辑器上已跑通分片上传给七牛，可以参考  plugin/components/qiniu/upload.js 中 uploadFileBlock 函数
+        目前已定位问题，FileSystemManager.readFileSync 大于10M就会出错，等待微信官方修复
         https://developers.weixin.qq.com/community/develop/doc/0004808af24458ef5ad829e175b800
 ### 为什么做这样一个插件？
     1. 上传到七牛都需依赖服务端生成 token，为了省去这些重复的劳动；
