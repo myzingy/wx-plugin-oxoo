@@ -164,44 +164,82 @@ Component({
         count:count,
         nowCount:nowCount,
         fileCurrent:fileCurrent,
-        hasEdit:hasEdit
+        hasEdit:hasEdit,
+        qnConf:this.data.qnConf
       })
       if(!hasEdit && count-nowCount<1){
         return util.toast('最多只能上传'+count+'个文件','none');
       }
-      wx.chooseImage({
-        count:hasEdit?1:(count-nowCount),
-        sizeType:this.data.upConf.sizeType?this.data.upConf.sizeType:['original', 'compressed'],
-        sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
-        success:res=>{
-          console.log('wx.chooseImage',res);
-          let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
-          if(hasEdit){
-            this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
-            this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
-            this.files[this.upConfGroup][fileCurrent].progress=0
-            if(hasUploadBlock){
-              this.uploadFileBlock(res.tempFiles[0],fileCurrent)
-            }else{
-              this.uploadFile(res.tempFiles[0].path,fileCurrent)
-            }
-          }else{
-            res.tempFiles.forEach((f,fi)=>{
-              f.current=nowCount+fi;
-              f.progress=0;
-              this.files[this.upConfGroup].push(f)
-            })
-            this.files[this.upConfGroup].forEach((f,fi)=>{
-              if(hasUploadBlock && f.size > chunkSize){
-                this.uploadFileBlock(f,fi)
-              }else {
-                this.uploadFile(f.path, fi)
+      if('video'==this.data.qnConf.fileType){
+        wx.chooseVideo({
+          sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
+          compressed:this.data.upConf.compressed===false?false:true,
+          maxDuration:this.data.upConf.maxDuration?this.data.upConf.maxDuration:60,
+          camera:this.data.upConf.camera?this.data.upConf.camera:'back',//back,
+          // front
+          success:res=>{
+            console.log('wx.chooseVideo',res);
+            let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
+            res.current=nowCount
+            res.progress=0
+            res.path=res.tempFilePath
+            if(hasEdit){
+              this.files[this.upConfGroup][fileCurrent]=res
+              this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
+              this.files[this.upConfGroup][fileCurrent].progress=0
+              if(hasUploadBlock){
+                this.uploadFileBlock(res,fileCurrent)
+              }else{
+                this.uploadFile(res.path,fileCurrent)
               }
-            })
+            }else{
+              this.files[this.upConfGroup].push(res)
+              this.files[this.upConfGroup].forEach((f,fi)=>{
+                if(hasUploadBlock && f.size > chunkSize){
+                  this.uploadFileBlock(f,fi)
+                }else {
+                  this.uploadFile(f.path, fi)
+                }
+              })
+            }
+            this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
           }
-          this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
-        }
-      })
+        })
+      }else{
+        wx.chooseImage({
+          count:hasEdit?1:(count-nowCount),
+          sizeType:this.data.upConf.sizeType?this.data.upConf.sizeType:['original', 'compressed'],
+          sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
+          success:res=>{
+            console.log('wx.chooseImage',res);
+            let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
+            if(hasEdit){
+              this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
+              this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
+              this.files[this.upConfGroup][fileCurrent].progress=0
+              if(hasUploadBlock){
+                this.uploadFileBlock(res.tempFiles[0],fileCurrent)
+              }else{
+                this.uploadFile(res.tempFiles[0].path,fileCurrent)
+              }
+            }else{
+              res.tempFiles.forEach((f,fi)=>{
+                f.current=nowCount+fi;
+                f.progress=0;
+                this.files[this.upConfGroup].push(f)
+              })
+              this.files[this.upConfGroup].forEach((f,fi)=>{
+                if(hasUploadBlock && f.size > chunkSize){
+                  this.uploadFileBlock(f,fi)
+                }else {
+                  this.uploadFile(f.path, fi)
+                }
+              })
+            }
+            this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
+          }
+        })
+      }
     },
     /***
      * 分块上传

@@ -22,9 +22,9 @@ Page({
     qnConf2:{
       accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
       secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
-      token:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ:4NUt3l_-rUltAw0f0XGYfFEq32k=:eyJyZXR1cm5Cb2R5Ijoie1wia2V5XCI6XCIkKGtleSlcIixcImJ1Y2tldFwiOlwiJChidWNrZXQpXCIsXCJtaW1lVHlwZVwiOlwiJChtaW1lVHlwZSlcIixcImZzaXplXCI6XCIkKGZzaXplKVwifSIsInNhdmVLZXkiOiIkKHg6dXNlcnBhdGgpJCh4OmZpbGVuYW1lKSIsInNjb3BlIjoiZm90b28iLCJkZWFkbGluZSI6MTU2MjgzMjM4MH0=',
+      //token:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ:4NUt3l_-rUltAw0f0XGYfFEq32k=:eyJyZXR1cm5Cb2R5Ijoie1wia2V5XCI6XCIkKGtleSlcIixcImJ1Y2tldFwiOlwiJChidWNrZXQpXCIsXCJtaW1lVHlwZVwiOlwiJChtaW1lVHlwZSlcIixcImZzaXplXCI6XCIkKGZzaXplKVwifSIsInNhdmVLZXkiOiIkKHg6dXNlcnBhdGgpJCh4OmZpbGVuYW1lKSIsInNjb3BlIjoiZm90b28iLCJkZWFkbGluZSI6MTU2MjgzMjM4MH0=',
       bucket:'fotoo',
-      fileType:'file',
+      fileType:'video',
       region:'华东',
       domain:'http://qn001.pfotoo.com',
     },

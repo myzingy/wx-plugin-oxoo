@@ -4,6 +4,9 @@
     height: 200rpx;
     padding: 20rpx;
 }
+.qnupload.video{
+    width: calc(100% - 40rpx);
+}
 .upload{
     background-color: antiquewhite;
     position: relative;
@@ -75,4 +78,21 @@
     padding: 100rpx 40rpx;
     word-break:break-all;
     background-color: rgba(200,200,0,0.7);
+}
+.upload.play:before{
+    content: '';
+    left:calc(50% - 75rpx);
+    top:calc(50% - 50rpx);
+    width: 100rpx;
+    height: 100rpx;
+    position: absolute;
+    transform: rotate(135deg);
+    border-width: 40rpx;
+    border-color: #FAC7B6 transparent transparent #FAC7B6;
+    /*border-style: solid;*/
+    border-style: ridge;
+    /*border-style: groove;*/
+    border-radius: 50rpx;
+    border-top-left-radius: 10rpx;
+    box-sizing: border-box;
 }

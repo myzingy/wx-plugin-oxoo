@@ -40,6 +40,9 @@ function getToken(params){
     if(params.fileType=='image') {
       //图片瘦身另存为lim
       options.persistentOps = 'imageslim|saveas/$(x:limkey)'
+    }else if(params.fileType=='video'){
+      //截图另存为lim
+      options.persistentOps = 'vframe/jpg/offset/7/w/960|saveas/$(x:limkey)'
     }
     var putPolicy = new qiniu.rs.PutPolicy(options);
     let token=putPolicy.uploadToken(mac);

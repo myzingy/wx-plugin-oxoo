@@ -1,4 +1,4 @@
-<block wx:for="{{files}}" wx:key="files.key">
+<block wx:for="{{files}}" wx:key="fileskey">
     <qnupload qnConf="{{qnConf}}" upConf="{{upConf}}"
               file="{{item}}" files="{{files}}" fsm="{{fsm}}"
               bindevent="qnevent" class="qnupload">
@@ -13,19 +13,19 @@
     <view class="upload add"></view>
 </qnupload>
 <view class="block">
-    <view class="block-title">再来一组(通过 upConf.group 区分)</view>
-    <block wx:for="{{files2}}" wx:key="files.key">
+    <view class="block-title">视频上传(通过 upConf.group 区分)</view>
+    <block wx:for="{{files2}}" wx:key="fileskey">
         <qnupload qnConf="{{qnConf2}}" upConf="{{upConf2}}"
                   file="{{item}}" files="{{files2}}"
-                  bindevent="qnevent2" class="qnupload">
-            <image wx:if="{{hasIphone}}" class="upload" src="{{item.path}}"></image>
-            <view wx:else="" class="upload" style="background-image: url('{{item.path}}')"></view>
+                  bindevent="qnevent2" class="qnupload video">
+            <image wx:if="{{hasIphone}}" class="upload" src="{{item.thumbTempFilePath}}"></image>
+            <view wx:else="" class="upload" style="background-image: url('{{item.thumbTempFilePath}}')"></view>
         </qnupload>
     </block>
     <qnupload wx:if="{{hasAddFile2}}"
               qnConf="{{qnConf2}}" upConf="{{upConf2}}"
               file="{{item}}" files="{{files2}}"
-              bindevent="qnevent2" class="qnupload">
+              bindevent="qnevent2" class="qnupload video">
         <view class="upload add"></view>
     </qnupload>
 </view>
@@ -45,7 +45,7 @@
     <view class="image-info-view">
         <view class="image-info-close" bindtap="previewHide">X</view>
         <view class="image-info">
-            <block wx:for="{{urls}}" wx:key="urls.key">
+            <block wx:for="{{urls}}" wx:key="urlskey">
                 <view wx:if="{{currentIndex==index}}">
                     <view>index:{{index}}</view>
                     <view>url:{{item}}</view>

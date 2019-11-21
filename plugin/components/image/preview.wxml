@@ -6,7 +6,7 @@
                 autoplay="{{false}}" interval="{{interval}}"
                 current="{{swiperCurrent}}"
                 duration="500" bindchange="swiperChange">
-            <block wx:for="{{urls}}" wx:key="urls.key">
+            <block wx:for="{{urls}}" wx:key="urlskey">
                 <swiper-item class="swiper-item">
                     <movable-area style="height: {{height}}px; width: {{width}}px;">
                         <view class="loading-view" style="height: {{height}}px; width: {{width}}px;" hidden="{{urlsLoaded[index]}}">
