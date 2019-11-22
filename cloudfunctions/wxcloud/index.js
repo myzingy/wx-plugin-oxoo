@@ -101,12 +101,18 @@ async function getQrcode(params){
 //security 内容安全检测
 async function security(params){
   let response={code:300,msg:'非法内容'}
-  let securityRes
+  let securityRes,res
+  console.log('params',params)
   if(params.url){
-    let res=await got.get(params.url,{
-      encoding:null,
-    })
-    //console.log('res.body',Buffer.isBuffer(res.body),res.headers)
+    try{
+      res=await got.get(params.url,{
+        encoding:null,
+      })
+      console.log('res.body',Buffer.isBuffer(res.body))
+    }catch (e){
+      return await security(params)
+    }
+
     let media={
       'contentType':res.headers['content-type'],
       'value':res.body,
@@ -132,5 +138,6 @@ async function security(params){
   if(securityRes.errCode==0){
     return {code:200,msg:''}
   }
+
   return response;
 }

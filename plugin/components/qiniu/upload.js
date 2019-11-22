@@ -134,7 +134,11 @@ Component({
         console.log('wx.uploadFile.success',res);
         let remote=JSON.parse(res.data);
         remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
-        let securityFlag=await cloud.security(remote.url)
+        console.log('cloud.security',remote.url+'.lim.jpg');
+        let securityFlag=true
+        if(this.data.upConf.security){
+          securityFlag=await cloud.security(remote.url+'.lim.jpg')
+        }
         if(securityFlag){
           this.files[this.upConfGroup][fileIndex].remote=remote
           this.files[this.upConfGroup][fileIndex].progress=100;
