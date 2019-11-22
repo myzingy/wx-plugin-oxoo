@@ -106,14 +106,12 @@ async function security(params){
     let res=await got.get(params.url,{
       encoding:null,
     })
-    console.log('res.body',Buffer.isBuffer(res.body),res.headers)
+    //console.log('res.body',Buffer.isBuffer(res.body),res.headers)
     let media={
       'contentType':res.headers['content-type'],
-      'content-type':res.headers['content-type'],
       'value':res.body,
-      'body':res.body
     };
-    console.log('media',media)
+    //console.log('media',media)
     securityRes=await cloud.openapi.security.imgSecCheck({
       media: media
     })
