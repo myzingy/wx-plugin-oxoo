@@ -17,7 +17,7 @@
         如，视频返回地址为 http://qn.you.com/original.mp4
         则，视频缩略图地址为 http://qn.you.com/original.mp4.lim.jpg
         
-    3. 内容安全检查
+    3. 内容安全检查(尚未实现)
         对于图片和视频的检查，本插件都是基于 lim.jpg 进行处理，
         开启后上传完成后进行自动检查并通过上传通知事件通知页面
 ##使用
@@ -52,6 +52,7 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
 ```` 
 + Page wxml文件
 ````angular2html
+<!-- 上传图片 -->
 <block wx:for="{{files}}" wx:key="files.key">
     <qnupload qnConf="{{qnConf}}" upConf="{{upConf}}"
               file="{{item}}" files="{{files}}"
@@ -63,6 +64,26 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
         qnConf="{{qnConf}}" upConf="{{upConf}}"
           file="{{item}}" files="{{files}}"
           bindevent="qnevent" class="qnupload">
+    <view class="upload add"></view>
+</qnupload>
+<!-- 上传视频 -->
+<block wx:for="{{files2}}" wx:key="fileskey">
+    <qnupload qnConf="{{qnConf2}}" upConf="{{upConf2}}"
+              file="{{item}}" files="{{files2}}"
+              bindevent="qnevent2" class="qnupload video">
+        <video class="upload"
+               show-fullscreen-btn="{{false}}"
+               show-play-btn="{{false}}"
+               show-center-play-btn="{{false}}"
+               enable-progress-gesture="{{false}}"
+               object-fit="fill"
+               src="{{item.tempFilePath}}"></video>
+    </qnupload>
+</block>
+<qnupload wx:if="{{hasAddFile2}}"
+          qnConf="{{qnConf2}}" upConf="{{upConf2}}"
+          file="{{item}}" files="{{files2}}"
+          bindevent="qnevent2" class="qnupload video">
     <view class="upload add"></view>
 </qnupload>
 ````
