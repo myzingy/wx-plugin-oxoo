@@ -18,8 +18,13 @@
         <qnupload qnConf="{{qnConf2}}" upConf="{{upConf2}}"
                   file="{{item}}" files="{{files2}}"
                   bindevent="qnevent2" class="qnupload video">
-            <image wx:if="{{hasIphone}}" class="upload" src="{{item.thumbTempFilePath}}"></image>
-            <view wx:else="" class="upload" style="background-image: url('{{item.thumbTempFilePath}}')"></view>
+            <video class="upload"
+                   show-fullscreen-btn="{{false}}"
+                   show-play-btn="{{false}}"
+                   show-center-play-btn="{{false}}"
+                   enable-progress-gesture="{{false}}"
+                   object-fit="fill"
+                   src="{{item.tempFilePath}}"></video>
         </qnupload>
     </block>
     <qnupload wx:if="{{hasAddFile2}}"
