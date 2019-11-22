@@ -11,6 +11,15 @@
         第一张原图，如  http://qn.you.com/original.jpg
         第二张为瘦身图 ，为 http://qn.you.com/original.jpg.lim.jpg 其中 .lim.jpg 为固定格式
         通常使用可以使用lim.jpg,加速访问、降低流量；下载原图时再用原图地址   
+        
+    2. 支持视频上传
+        支持视频上传，并自动截取视频图，通过视频地址增加 lim.jpg 访问
+        如，视频返回地址为 http://qn.you.com/original.mp4
+        则，视频缩略图地址为 http://qn.you.com/original.mp4.lim.jpg
+        
+    3. 内容安全检查
+        对于图片和视频的检查，本插件都是基于 lim.jpg 进行处理，
+        开启后上传完成后进行自动检查并通过上传通知事件通知页面
 ##使用
 ```
 1，小程序后台添加插件

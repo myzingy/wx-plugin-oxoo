@@ -41,6 +41,10 @@ Component({
      * upConf.group 一个页面上多个组件的区分标识
      * upConf.sizeType ['original', 'compressed'] 所选的图片的尺寸
      * upConf.sourceType ['album', 'camera'] 选择图片的来源
+     * upConf.compressed 是否压缩，默认 true,
+     * upConf.maxDuration 视频最大时长（秒）默认 60,
+     * upConf.camera 开启摄像头 back|front 默认back
+     * upConf.security 开启非法检测，默认 false
      */
     upConf:{
       type:Object,
@@ -126,13 +130,19 @@ Component({
           'x:filesize':this.files[this.upConfGroup][fileIndex].size,
           'x:limkey':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
         }
-      }).then(res=>{
+      }).then(async res=>{
         console.log('wx.uploadFile.success',res);
-        this.files[this.upConfGroup][fileIndex].progress=100;
         let remote=JSON.parse(res.data);
         remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
-        this.files[this.upConfGroup][fileIndex].remote=remote
-        this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        let securityFlag=await cloud.security(remote.url)
+        if(securityFlag){
+          this.files[this.upConfGroup][fileIndex].remote=remote
+          this.files[this.upConfGroup][fileIndex].progress=100;
+          this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        }else{
+          this.files[this.upConfGroup][fileIndex].hasFail=true;
+          this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        }
       }).catch(res=>{
         console.log('wx.uploadFile.fail',res);
         this.files[this.upConfGroup][fileIndex].hasFail=true;

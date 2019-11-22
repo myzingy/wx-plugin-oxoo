@@ -80,4 +80,22 @@ module.exports = {
     regionName=regionName||''
     return cup.replace('{region}',regionName);
   },
+  async security(url_txt=''){
+    let data={
+      act:'security',
+    }
+    if(url_txt.indexOf('http')==0){
+      data.url=url_txt
+    }else{
+      data.txt=url_txt
+    }
+    let res=await wx.cloud.callFunction({
+      name: 'wxcloud',
+      data: data,
+    })
+    if(res.result.code==200){
+      return true
+    }
+    return false
+  },
 }

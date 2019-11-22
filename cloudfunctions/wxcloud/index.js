@@ -11,6 +11,8 @@ exports.main = async (event, context) => {
       break;
     case 'qrcode':
       return await getQrcode(event);
+    case 'security':
+      return await security(event);
   }
 }
 //获取token
@@ -95,4 +97,33 @@ async function getQrcode(params){
 
   }
   return qrres
+}
+//security 内容安全检测
+async function security(params){
+  let response={code:300,msg:'非法内容'}
+  let securityRes
+  if(params.url){
+    let res=await got.get(params.url,{
+      encoding:null,
+    })
+    console.log('res.body',Buffer.isBuffer(res.body),res.headers)
+    let media={
+      'contentType':res.headers['content-type'],
+      'content-type':res.headers['content-type'],
+      'value':res.body,
+      'body':res.body
+    };
+    console.log('media',media)
+    securityRes=await cloud.openapi.security.imgSecCheck({
+      media: media
+    })
+  }else{
+    securityRes=await cloud.openapi.security.msgSecCheck({
+      content:params.txt
+    })
+  }
+  if(securityRes.errCode==0){
+    return {code:200,msg:''}
+  }
+  return response;
 }
