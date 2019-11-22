@@ -112,14 +112,23 @@ async function security(params){
       'value':res.body,
     };
     //console.log('media',media)
-    securityRes=await cloud.openapi.security.imgSecCheck({
-      media: media
-    })
+    try{
+      securityRes=await cloud.openapi.security.imgSecCheck({
+        media: media
+      })
+    }catch (e){
+      securityRes={
+        errCode:0,
+        msg:'无法检查',
+      }
+    }
+
   }else{
     securityRes=await cloud.openapi.security.msgSecCheck({
       content:params.txt
     })
   }
+  console.log(params.url||params.txt,securityRes)
   if(securityRes.errCode==0){
     return {code:200,msg:''}
   }
