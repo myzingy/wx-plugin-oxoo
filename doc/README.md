@@ -137,12 +137,19 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
     },
     upConf:{
       prefixPath:'mkblk', //上传到七牛后有一个路径前缀，可为空
-      count:3, //最多可以选择的图片张数
-      sizeType:['original'],  //['original', 'compressed'] 所选的图片的尺寸,超大图片 compressed 会引起开卡顿
-      sourceType:['album'], //['album', 'camera'] 选择图片的来源
       loading:'leaf',// none|leaf|circle|ring, def leaf 上传的loading效果; none为无，可自行在page wxml中添加
       group:'def', //一个页面上多个组件的区分标识
+      security:false, // 开启非法检测，默认 false
       
+      //上传图片
+      count:3, //最多可以选择的图片张数
+      sizeType:['original'],  //['original', 'compressed'] 所选的图片的尺寸,超大图片 compressed 会引起开卡顿
+      sourceType:['album'], //['album', 'camera'] 选择图片的来源      
+      
+      //上传视频
+      compressed:true,  // 是否压缩，默认 true,
+      maxDuration:60, // 视频最大时长（秒）默认 60,
+      camera:'back',  // 开启摄像头 back|front 默认back
     },
     files:[], //组件数据放入这里展示到页面上
     hasAddFile:true,//出现上传加号
