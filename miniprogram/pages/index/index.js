@@ -33,6 +33,7 @@ Page({
       count:3,
       group:'222',
       loading:'ring',
+      compressed:false,
     },
     files2:[],
     hasAddFile2:true,//出现上传加号
