@@ -14,6 +14,7 @@ Page({
       count:3, //最多可以选择的图片张数
       sizeType:['original'],  //['original', 'compressed'] 所选的图片的尺寸
       sourceType:['album'], //['album', 'camera'] 选择图片的来源
+      //security:true,
     },
     files:[],
     hasAddFile:true,//出现上传加号
