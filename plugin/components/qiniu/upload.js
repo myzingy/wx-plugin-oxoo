@@ -129,7 +129,7 @@ Component({
           'x:filename':filename,
           'x:filesize':this.files[this.upConfGroup][fileIndex].size,
           'x:limkey':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
-          'x:limmp4':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.mp4'),
+          //'x:limmp4':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.mp4'),
         }
       }).then(async res=>{
         console.log('wx.uploadFile.success',res);

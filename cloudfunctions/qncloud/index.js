@@ -42,7 +42,8 @@ function getToken(params){
       options.persistentOps = 'imageslim|saveas/$(x:limkey)'
     }else if(params.fileType=='video'){
       //截图另存为lim
-      options.persistentOps = 'vframe/jpg/offset/7/w/960|saveas/$(x:limkey);avthumb/mp4/vcodec/libx264/avsmart/1/enhance/0|saveas/$(x:limmp4)'
+      //options.persistentOps = 'vframe/jpg/offset/7/w/960|saveas/$(x:limkey);avthumb/mp4/vcodec/libx264/avsmart/1/enhance/0|saveas/$(x:limmp4)'
+      options.persistentOps = 'vframe/jpg/offset/7/w/960|saveas/$(x:limkey)'
     }
     var putPolicy = new qiniu.rs.PutPolicy(options);
     let token=putPolicy.uploadToken(mac);
