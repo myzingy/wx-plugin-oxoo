@@ -21,10 +21,12 @@ exports.main = async (event, context) => {
 //获取上传token
 function getToken(params){
   let response={code:300,msg:'参数为空'}
-  if(params.accessKey && params.secretKey && params.bucket){
+  if(params.accessKey && params.secretKey && params.bucket) {
     let returnBody
-    if(params.fileType=='image'){
-      returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":$(imageAve)}'
+    if (params.fileType == 'image') {
+      returnBody = '{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","exif":$(exif),"imageInfo":$(imageInfo),"imageAve":$(imageAve)}'
+    }else if(params.fileType=='video'){//avinfo
+      returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)","avinfo":$(avinfo)}'
     }else{
       returnBody='{"key":"$(key)","bucket":"$(bucket)","mimeType":"$(mimeType)","fsize":"$(fsize)"}'
     }
