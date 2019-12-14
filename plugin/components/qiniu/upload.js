@@ -91,7 +91,10 @@ Component({
       //console.log(this.files,this.upConfGroup,this.data.files)
       if(!this.files) return;
       this.files[this.upConfGroup]=this.data.files;
-    }
+    },
+    'qnConf':function(qnConf){
+      cloud.getTokenQiniu(qnConf)
+    },
   },
   methods:{
     async uploadFile(file,fileIndex=0){
