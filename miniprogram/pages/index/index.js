@@ -3,7 +3,7 @@ Page({
   data:{
     qnConf:{
       accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
-      secretKey:'1mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
+      secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
       bucket:'fotoo',
       fileType:'image',
       region:'华东',

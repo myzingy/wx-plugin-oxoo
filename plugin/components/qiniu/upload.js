@@ -142,7 +142,7 @@ Component({
           this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
           return;
         }
-        remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
+        remote.url=this.files[this.upConfGroup][fileIndex].conf.domain+'/'+remote.key
         let securityFlag=true
         if(this.data.upConf.security){
           console.log('cloud.security',remote.url+'.lim.jpg');
@@ -240,6 +240,11 @@ Component({
               this.files[this.upConfGroup][fileCurrent]=res.tempFiles[0]
               this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
               this.files[this.upConfGroup][fileCurrent].progress=0
+              this.files[this.upConfGroup][fileCurrent].conf={
+                group:this.upConfGroup,
+                domain:this.data.qnConf.domain,
+                fileType:this.data.qnConf.fileType,
+              }
               if(hasUploadBlock){
                 this.uploadFileBlock(res.tempFiles[0],fileCurrent)
               }else{
@@ -249,6 +254,11 @@ Component({
               res.tempFiles.forEach((f,fi)=>{
                 f.current=nowCount+fi;
                 f.progress=0;
+                f.conf={
+                  group:this.upConfGroup,
+                  domain:this.data.qnConf.domain,
+                  fileType:this.data.qnConf.fileType,
+                }
                 this.files[this.upConfGroup].push(f)
               })
               this.files[this.upConfGroup].forEach((f,fi)=>{
