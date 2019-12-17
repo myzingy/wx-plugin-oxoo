@@ -137,6 +137,11 @@ Component({
       }).then(async res=>{
         console.log('wx.uploadFile.success',res);
         let remote=JSON.parse(res.data);
+        if(remote.error){
+          this.files[this.upConfGroup][fileIndex].hasFail=true;
+          this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+          return;
+        }
         remote.url=(this.data.qnConf.domain||'配置qnConf.domain')+'/'+remote.key
         let securityFlag=true
         if(this.data.upConf.security){

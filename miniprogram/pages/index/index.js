@@ -3,7 +3,7 @@ Page({
   data:{
     qnConf:{
       accessKey:'p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ',
-      secretKey:'mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
+      secretKey:'1mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6',
       bucket:'fotoo',
       fileType:'image',
       region:'华东',
@@ -69,9 +69,13 @@ Page({
   },
   qnevent(e){
     console.log('qnevent',e.detail);
+    let fdata=e.detail.data
+    if(e.detail.act=='uploadFail'){
+      plugin.toast('上传失败','none');
+    }
     this.setData({
-      files:e.detail.data,
-      hasAddFile:e.detail.data.length<this.data.upConf.count
+      files:fdata,
+      hasAddFile:fdata.length<this.data.upConf.count
     })
   },
   qnevent2(e){
