@@ -6,8 +6,8 @@
 
 # 优点
     1. 预处理图片，支持20m以上的大图片文件  
-        七牛实时图片处理接口，只支持20m内的文件，会引起图片无法加载的情况；
-        这里的上传策略对每张图都做了imageslim（图片瘦身）预处理，接就是上传到七牛是2张图；
+        七牛实时图片处理接口，只支持20m内的文件，大于20m会引起图片无法加载的情况；
+        这里的上传策略对每张图都做了imageslim（图片瘦身）另存预处理，上传到七牛后是2张图；
         第一张原图，如  http://qn.you.com/original.jpg
         第二张为瘦身图 ，为 http://qn.you.com/original.jpg.lim.jpg 其中 .lim.jpg 为固定格式
         通常使用可以使用lim.jpg,加速访问、降低流量；下载原图时再用原图地址   
@@ -163,6 +163,28 @@ previewImage | 官方 wx.previewImage 不能加任何文字，这个什么都可
         })
       },
 ````
++ qnevent 通知事件
+```html
+可通过绑定event进行捕获，所有上传消息都通过事件送达
+<qnupload bindevent="qnevent"></qnupload>
+捕获的 e.detail 结构如下
+{
+    act:String
+    data:[ //所有文件集合
+        ...,
+        file,
+        ...
+    ]
+}   
+```
+e.detail.act 返回值
+
+返回值 | 说明 | 对data 中 file 的影响
+---------------- | --------------  | --------------  
+chooseImage |  文件选择完成 |  初始化file
+uploadStart |  开始上传  |  上传进度 file.progress 20以内 
+uploadCompleted |  上传成功  |  上传进度 file.progress 100,增加 file.remote  
+uploadFail |  上传失败  |  file.hasFail 为 true 
 
 ### 图片预览组件 previewImage
     与 wx.previewImage 功能相同，可以放大、滑动切换；最主要功能是可以写个 view 放在图片上，想放啥都行
