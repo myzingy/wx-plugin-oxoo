@@ -99,27 +99,29 @@ Component({
   methods:{
     async uploadFile(file,fileIndex=0){
       console.log('uploadFile',this.files[this.upConfGroup][fileIndex])
+      let qnConf=this.files[this.upConfGroup][fileIndex].conf.qnConf
+      let upConf=this.files[this.upConfGroup][fileIndex].conf.upConf
       if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('://tmp')<0) return;//已上传
       if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].progress==100) return;//已上传
-      let token=await cloud.getTokenQiniu(this.data.qnConf)
+      let token=await cloud.getTokenQiniu(qnConf)
       let filename=file.split('.');
       if(filename[filename.length-1].length<5){
         filename=util.mdx(file)+'.'+filename[filename.length-1]
       }else{
         filename=util.mdx(file)
       }
-      let prefixPath=this.data.upConf.prefixPath?this.data.upConf.prefixPath:'';
+      let prefixPath=upConf.prefixPath?upConf.prefixPath:'';
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
         prefixPath+='/';
       }
       this.files[this.upConfGroup][fileIndex].progress=parseInt(Math.random()*20+10);
       console.log('wx.uploadFile.file',this.files[this.upConfGroup][fileIndex],filename);
-      console.log('urlsafeBase64Encode',urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'));
+      console.log('urlsafeBase64Encode',urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'));
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
 
 
       util.promise('wx.uploadFile',{
-        url:cloud.getUploadPath(this.data.qnConf.region),
+        url:cloud.getUploadPath(qnConf.region),
         filePath:file,
         name: 'file',
         header: {
@@ -131,7 +133,7 @@ Component({
           'x:userpath':prefixPath,
           'x:filename':filename,
           'x:filesize':this.files[this.upConfGroup][fileIndex].size,
-          'x:limkey':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
+          'x:limkey':urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
           //'x:limmp4':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.mp4'),
         }
       }).then(async res=>{
@@ -142,9 +144,9 @@ Component({
           this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
           return;
         }
-        remote.url=this.files[this.upConfGroup][fileIndex].conf.domain+'/'+remote.key
+        remote.url=qnConf.domain+'/'+remote.key
         let securityFlag=true
-        if(this.data.upConf.security){
+        if(upConf.security){
           console.log('cloud.security',remote.url+'.lim.jpg');
           securityFlag=await cloud.security(remote.url+'.lim.jpg')
         }
@@ -164,7 +166,10 @@ Component({
     },
     changeFile(e){
       //return console.log(urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg'))
-      let count=this.data.upConf.count||1;
+      let qnConf=JSON.parse(JSON.stringify(this.data.qnConf))
+      let upConf=JSON.parse(JSON.stringify(this.data.upConf))
+      upConf.group=this.upConfGroup
+      let count=upConf.count||1;
       let nowCount=this.files[this.upConfGroup].length;
       let fileCurrent=0
       if(this.data.file){
@@ -188,17 +193,17 @@ Component({
         nowCount:nowCount,
         fileCurrent:fileCurrent,
         hasEdit:hasEdit,
-        qnConf:this.data.qnConf
+        qnConf:qnConf
       })
       if(!hasEdit && count-nowCount<1){
         return util.toast('最多只能上传'+count+'个文件','none');
       }
-      if('video'==this.data.qnConf.fileType){
+      if('video'==qnConf.fileType){
         wx.chooseVideo({
-          sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
-          compressed:this.data.upConf.compressed===false?false:true,
-          maxDuration:this.data.upConf.maxDuration?this.data.upConf.maxDuration:60,
-          camera:this.data.upConf.camera?this.data.upConf.camera:'back',//back,
+          sourceType:upConf.sourceType?upConf.sourceType:['album', 'camera'],
+          compressed:upConf.compressed===false?false:true,
+          maxDuration:upConf.maxDuration?upConf.maxDuration:60,
+          camera:upConf.camera?upConf.camera:'back',//back,
           // front
           success:res=>{
             console.log('wx.chooseVideo',res);
@@ -210,12 +215,20 @@ Component({
               this.files[this.upConfGroup][fileCurrent]=res
               this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
               this.files[this.upConfGroup][fileCurrent].progress=0
+              this.files[this.upConfGroup][fileCurrent].conf={
+                qnConf:qnConf,
+                upConf:upConf,
+              }
               if(hasUploadBlock){
                 this.uploadFileBlock(res,fileCurrent)
               }else{
                 this.uploadFile(res.path,fileCurrent)
               }
             }else{
+              res.conf={
+                qnConf:qnConf,
+                upConf:upConf,
+              }
               this.files[this.upConfGroup].push(res)
               this.files[this.upConfGroup].forEach((f,fi)=>{
                 if(hasUploadBlock && f.size > chunkSize){
@@ -231,8 +244,8 @@ Component({
       }else{
         wx.chooseImage({
           count:hasEdit?1:(count-nowCount),
-          sizeType:this.data.upConf.sizeType?this.data.upConf.sizeType:['original', 'compressed'],
-          sourceType:this.data.upConf.sourceType?this.data.upConf.sourceType:['album', 'camera'],
+          sizeType:upConf.sizeType?upConf.sizeType:['original', 'compressed'],
+          sourceType:upConf.sourceType?upConf.sourceType:['album', 'camera'],
           success:res=>{
             console.log('wx.chooseImage',res);
             let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
@@ -241,9 +254,8 @@ Component({
               this.files[this.upConfGroup][fileCurrent].current=fileCurrent;
               this.files[this.upConfGroup][fileCurrent].progress=0
               this.files[this.upConfGroup][fileCurrent].conf={
-                group:this.upConfGroup,
-                domain:this.data.qnConf.domain,
-                fileType:this.data.qnConf.fileType,
+                qnConf:qnConf,
+                upConf:upConf,
               }
               if(hasUploadBlock){
                 this.uploadFileBlock(res.tempFiles[0],fileCurrent)
@@ -255,9 +267,8 @@ Component({
                 f.current=nowCount+fi;
                 f.progress=0;
                 f.conf={
-                  group:this.upConfGroup,
-                  domain:this.data.qnConf.domain,
-                  fileType:this.data.qnConf.fileType,
+                  qnConf:qnConf,
+                  upConf:upConf,
                 }
                 this.files[this.upConfGroup].push(f)
               })
