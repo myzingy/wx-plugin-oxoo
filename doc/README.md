@@ -27,7 +27,7 @@
 "plugins": {
     "vktool": {
       "version": "最新版本号",
-      "provider": "wxd3dc4206c76f14fc"
+      "provider": "wx08a0c42413d32176"
     }
   },
 ```

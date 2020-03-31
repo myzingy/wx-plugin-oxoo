@@ -5,7 +5,7 @@
   "plugins": {
     "myPlugin": {
       "version": "dev",
-      "provider": "wxd3dc4206c76f14fc"
+      "provider": "wx08a0c42413d32176"
     }
   },
   "sitemapLocation": "sitemap.json"
