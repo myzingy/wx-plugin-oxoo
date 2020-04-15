@@ -114,54 +114,58 @@ Component({
       if(prefixPath && prefixPath[prefixPath.length-1]!='/'){
         prefixPath+='/';
       }
-      this.files[this.upConfGroup][fileIndex].progress=parseInt(Math.random()*20+10);
+      this.files[this.upConfGroup][fileIndex].progress=0;
       console.log('wx.uploadFile.file',this.files[this.upConfGroup][fileIndex],filename);
       console.log('urlsafeBase64Encode',urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'));
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
-
-
-      util.promise('wx.uploadFile',{
+      this.files[this.upConfGroup][fileIndex].UploadTask=wx.uploadFile({
         url:cloud.getUploadPath(qnConf.region),
         filePath:file,
         name: 'file',
-        header: {
-          //"Content-Type": "multipart/form-data"
-          //"Content-Type":"application/x-www-form-urlencoded",
-        },
+        header: {},
         formData:{
           token:token,
           'x:userpath':prefixPath,
           'x:filename':filename,
           'x:filesize':this.files[this.upConfGroup][fileIndex].size,
           'x:limkey':urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
-          //'x:limmp4':urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.mp4'),
-        }
-      }).then(async res=>{
-        console.log('wx.uploadFile.success',res);
-        let remote=JSON.parse(res.data);
-        if(remote.error){
+        },
+        success:async res=>{
+          console.log('wx.uploadFile.success',res);
+          let remote=JSON.parse(res.data);
+          if(remote.error){
+            this.files[this.upConfGroup][fileIndex].hasFail=true;
+            this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+            return;
+          }
+          remote.url=qnConf.domain+'/'+remote.key
+          let securityFlag=true
+          if(upConf.security){
+            console.log('cloud.security',remote.url+'.lim.jpg');
+            securityFlag=await cloud.security(remote.url+'.lim.jpg')
+          }
+          if(securityFlag){
+            this.files[this.upConfGroup][fileIndex].remote=remote
+            this.files[this.upConfGroup][fileIndex].progress=100;
+            this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+          }else{
+            this.files[this.upConfGroup][fileIndex].hasFail=true;
+            this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+          }
+        },
+        fail:res=>{
+          console.log('wx.uploadFile.fail',res);
           this.files[this.upConfGroup][fileIndex].hasFail=true;
           this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
-          return;
+        },
+      })
+      this.files[this.upConfGroup][fileIndex].UploadTask.onProgressUpdate(pro=>{
+        console.log('onProgressUpdate',fileIndex,pro)
+        this.files[this.upConfGroup][fileIndex].progress=pro.progress
+        if(pro.progress>=100){
+          this.files[this.upConfGroup][fileIndex].UploadTask.offProgressUpdate()
         }
-        remote.url=qnConf.domain+'/'+remote.key
-        let securityFlag=true
-        if(upConf.security){
-          console.log('cloud.security',remote.url+'.lim.jpg');
-          securityFlag=await cloud.security(remote.url+'.lim.jpg')
-        }
-        if(securityFlag){
-          this.files[this.upConfGroup][fileIndex].remote=remote
-          this.files[this.upConfGroup][fileIndex].progress=100;
-          this.triggerEvent('event',{act:'uploadCompleted',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
-        }else{
-          this.files[this.upConfGroup][fileIndex].hasFail=true;
-          this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
-        }
-      }).catch(res=>{
-        console.log('wx.uploadFile.fail',res);
-        this.files[this.upConfGroup][fileIndex].hasFail=true;
-        this.triggerEvent('event',{act:'uploadFail',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        this.triggerEvent('event',{act:'uploadProgress',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
       })
     },
     changeFile(e){
@@ -238,7 +242,7 @@ Component({
                 }
               })
             }
-            this.triggerEvent('event',{act:'chooseImage',data:this.files[this.upConfGroup]})
+            this.triggerEvent('event',{act:'chooseVideo',data:this.files[this.upConfGroup]})
           }
         })
       }else{
