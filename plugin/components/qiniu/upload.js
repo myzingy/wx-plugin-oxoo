@@ -162,10 +162,13 @@ Component({
       this.files[this.upConfGroup][fileIndex].UploadTask.onProgressUpdate(pro=>{
         console.log('onProgressUpdate',fileIndex,pro)
         this.files[this.upConfGroup][fileIndex].progress=pro.progress
-        if(pro.progress>=100){
-          this.files[this.upConfGroup][fileIndex].UploadTask.offProgressUpdate()
-        }
         this.triggerEvent('event',{act:'uploadProgress',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
+        try{
+          if(pro.progress>=100 && this.files[this.upConfGroup][fileIndex].UploadTask){
+            this.files[this.upConfGroup][fileIndex].UploadTask.offProgressUpdate()
+            this.files[this.upConfGroup][fileIndex].UploadTask=null
+          }
+        }catch(e){}
       })
     },
     changeFile(e){
