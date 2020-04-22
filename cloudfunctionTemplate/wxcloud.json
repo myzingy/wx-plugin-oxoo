@@ -1,0 +1,26 @@
+[
+  {
+    "name": "wx.getAccessToken",
+    "value": {
+      "appid": "wx57e1b2146070ea91",
+      "secret": "f3e55bb8f01894f86237787382194773",
+      "act": "token",
+      "qnConf": {
+        "accessKey": "p7WjLuVs1GTpFRH_7mnZ0KidZfWXNh5_nW_2X_eJ",
+        "secretKey": "mWb6EV70xL2opJU1uwWk9Z7MyAUjPF8cLVwvd9x6",
+        "bucket": "fotoo",
+        "fileType": "file"
+      }
+    }
+  },
+  {
+    "name": "内容安全",
+    "value": {
+      "appid": "wx57e1b2146070ea91",
+      "secret": "f3e55bb8f01894f86237787382194773",
+      "act": "security",
+      "path": "/pages/index/index",
+      "url": "https://qn001.pfotoo.com/ustoken/md441643.mp4.lim.jpg"
+    }
+  }
+]

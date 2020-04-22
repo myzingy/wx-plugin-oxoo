@@ -1,0 +1,10 @@
+[
+  {
+    "name": "wx.getAccessToken",
+    "value": {
+      "appid": "value",
+      "secret": "value",
+      "act": "token"
+    }
+  }
+]
