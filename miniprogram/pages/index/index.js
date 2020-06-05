@@ -7,7 +7,7 @@ Page({
       bucket:'fotoo',
       fileType:'image',
       region:'华东',
-      domain:'http://qn001.pfotoo.com',
+      domain:'http://kk001.pfotoo.com',
     },
     upConf:{
       prefixPath:'mkblk', //上传到七牛后有一个路径前缀，可为空
@@ -27,7 +27,7 @@ Page({
       bucket:'fotoo',
       fileType:'video',
       region:'华东',
-      domain:'http://qn001.pfotoo.com',
+      domain:'http://kk001.pfotoo.com',
     },
     upConf2:{
       prefixPath:'ustoken',
