@@ -41,7 +41,8 @@ function getToken(params){
     }
     if(params.fileType=='image') {
       //图片瘦身另存为lim
-      options.persistentOps = 'imageslim|saveas/$(x:limkey)'
+      //options.persistentOps = 'imageslim|saveas/$(x:limkey)'
+      options.persistentOps = 'imageMogr2/format/jpg|imageslim|saveas/$(x:limkey)'
     }else if(params.fileType=='video'){
       //截图另存为lim
       //options.persistentOps = 'vframe/jpg/offset/7/w/960|saveas/$(x:limkey);avthumb/mp4/vcodec/libx264/avsmart/1/enhance/0|saveas/$(x:limmp4)'
