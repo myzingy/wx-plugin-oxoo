@@ -129,6 +129,7 @@ Component({
           'x:filename':filename,
           'x:filesize':this.files[this.upConfGroup][fileIndex].size,
           'x:limkey':urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'),
+          'x:m3u8':urlsafeBase64Encode(qnConf.bucket+':'+prefixPath+filename+'.m3u8'),
         },
         success:async res=>{
           console.log('wx.uploadFile.success',res);
@@ -349,6 +350,7 @@ Component({
         +'/x:filename/'+urlsafeBase64Encode(filename)
         +'/x:filesize/'+urlsafeBase64Encode(ab_val_length+"")
         +'/x:limkey/'+urlsafeBase64Encode(urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.lim.jpg'))
+        +'/x:m3u8/'+urlsafeBase64Encode(urlsafeBase64Encode(this.data.qnConf.bucket+':'+prefixPath+filename+'.m3u8'))
       console.log(path);
       this.mkfile(path,token,ctx).then(res=>{
         console.log('this.mkblk.res',res.data);
