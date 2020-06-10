@@ -35,6 +35,9 @@
         <view class="upload add"></view>
     </qnupload>
 </view>
+<!--
+<video src="http://kk001.pfotoo.com/ustoken/md439790.mp4.m3u8" style="width: 100%;"></video>
+-->
 <button type="primary" style="width: 90%;margin: 0 auto" bindtap="previewImage" >图片预览组件</button>
 <view class="block">
     <view class="block-title">插件使用</view>
