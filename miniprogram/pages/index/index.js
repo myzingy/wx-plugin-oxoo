@@ -42,7 +42,7 @@ Page({
     hasHidden:true,//图片预览
     currentIndex:0,
 
-    fsm:wx.getFileSystemManager(),//分块上传依赖
+    //fsm:wx.getFileSystemManager(),//分块上传依赖
     hasIphone:false,
   },
   onLoad: function() {
@@ -78,12 +78,28 @@ Page({
       hasAddFile:fdata.length<this.data.upConf.count
     })
   },
+  time:0,
+  stime:0,
   qnevent2(e){
     console.log('qnevent2',e.detail);
+    if(e.detail.act=='uploadStart'){
+      this.stime=new Date()/1000
+    }
+    if(e.detail.act=='uploadProgress'){
+      this.time=new Date()/1000
+    }
     this.setData({
       files2:e.detail.data,
       hasAddFile2:e.detail.data.length<this.data.upConf2.count
     })
+    if(e.detail.act=='uploadCompleted'){
+      let sec_all=parseInt(new Date()/1000-this.stime)
+      let sec=parseInt(new Date()/1000-this.time)
+      this.setData({
+        sec_all:parseInt(sec_all/60)+'m'+(sec_all%60)+'s',
+        sec:parseInt(sec/60)+'m'+(sec%60)+'s'
+      })
+    }
   },
   previewImage(){
     let p1='http://qn001.pfotoo.com/oxcc/md147418.jpg.lim.jpg?x='
