@@ -46,7 +46,10 @@ function getToken(params){
     }else if(params.fileType=='video'){
       //截图另存为lim
       options.persistentOps = 'vframe/jpg/offset/2/w/960|saveas/$(x:limkey)'
+      //未自动旋正
       //options.persistentOps = 'vframe/jpg/offset/2/w/960|saveas/$(x:limkey);avthumb/m3u8/noDomain/1/vcodec/copy/acodec/copy|saveas/$(x:m3u8)'
+      //七牛给的可自动旋正
+      //options.persistentOps = 'vframe/jpg/offset/2/w/960|saveas/$(x:limkey);avthumb/m3u8/segtime/6/ab/64k/ar/44100/acodec/libfaac|saveas/$(x:m3u8)'
     }
     var putPolicy = new qiniu.rs.PutPolicy(options);
     let token=putPolicy.uploadToken(mac);
