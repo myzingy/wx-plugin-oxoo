@@ -172,7 +172,10 @@ Component({
         }catch(e){}
       })
     },
+    hasChangeIng:false,
     changeFile(e){
+      if(this.hasChangeIng) return;
+      this.hasChangeIng=true
       //return console.log(urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg'))
       let qnConf=JSON.parse(JSON.stringify(this.data.qnConf))
       let upConf=JSON.parse(JSON.stringify(this.data.upConf))
@@ -213,6 +216,9 @@ Component({
           maxDuration:upConf.maxDuration?upConf.maxDuration:60,
           camera:upConf.camera?upConf.camera:'back',//back,
           // front
+          complete:()=>{
+            this.hasChangeIng=false
+          },
           success:res=>{
             console.log('wx.chooseVideo',res);
             let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
@@ -254,6 +260,9 @@ Component({
           count:hasEdit?1:(count-nowCount),
           sizeType:upConf.sizeType?upConf.sizeType:['original', 'compressed'],
           sourceType:upConf.sourceType?upConf.sourceType:['album', 'camera'],
+          complete:()=>{
+            this.hasChangeIng=false
+          },
           success:res=>{
             console.log('wx.chooseImage',res);
             let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
