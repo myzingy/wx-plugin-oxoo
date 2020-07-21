@@ -174,7 +174,9 @@ Component({
     },
     hasChangeIng:false,
     changeFile(e){
-      if(this.hasChangeIng) return;
+      if(this.hasChangeIng) {
+        return util.toast('操作太快，请等待');
+      }
       this.hasChangeIng=true
       //return console.log(urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg'))
       let qnConf=JSON.parse(JSON.stringify(this.data.qnConf))
