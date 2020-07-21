@@ -77,6 +77,7 @@ Component({
 
   },
   attached: async function(){
+    this.hasChangeIng=0
     this.upConfGroup='def'
     console.log('this.data.qnConf',this.data.qnConf)
     cloud.getTokenQiniu(this.data.qnConf)
@@ -161,7 +162,7 @@ Component({
         },
       })
       this.files[this.upConfGroup][fileIndex].UploadTask.onProgressUpdate(pro=>{
-        console.log('onProgressUpdate',fileIndex,pro)
+        //console.log('onProgressUpdate',fileIndex,pro)
         this.files[this.upConfGroup][fileIndex].progress=pro.progress
         this.triggerEvent('event',{act:'uploadProgress',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
         try{
@@ -172,12 +173,19 @@ Component({
         }catch(e){}
       })
     },
-    hasChangeIng:false,
     changeFile(e){
-      if(this.hasChangeIng) {
+      if(this.hasChangeIng>=2){
+        this.hasChangeIng=0
+        wx.hideLoading()
+      }
+      this.hasChangeIng++
+      console.log(this.hasChangeIng)
+      if(this.hasChangeIng>1) {
         return util.toast('操作太快，请等待');
       }
-      this.hasChangeIng=true
+      wx.showLoading({
+        title: '处理中',
+      })
       //return console.log(urlsafeBase64Encode('fotoo:prefixPath/md477040.jpeg.lim.jpg'))
       let qnConf=JSON.parse(JSON.stringify(this.data.qnConf))
       let upConf=JSON.parse(JSON.stringify(this.data.upConf))
@@ -200,7 +208,7 @@ Component({
           hasEdit=false;
         }
       }
-      console.log({
+      console.log(new Date()/1000,{
         'this.data.file':this.data.file,
         count:count,
         nowCount:nowCount,
@@ -219,10 +227,11 @@ Component({
           camera:upConf.camera?upConf.camera:'back',//back,
           // front
           complete:()=>{
-            this.hasChangeIng=false
+            this.hasChangeIng=0
+            wx.hideLoading()
           },
           success:res=>{
-            console.log('wx.chooseVideo',res);
+            console.log('wx.chooseVideo',new Date()/1000,res);
             let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
             res.current=nowCount
             res.progress=0
@@ -263,7 +272,8 @@ Component({
           sizeType:upConf.sizeType?upConf.sizeType:['original', 'compressed'],
           sourceType:upConf.sourceType?upConf.sourceType:['album', 'camera'],
           complete:()=>{
-            this.hasChangeIng=false
+            this.hasChangeIng=0
+            wx.hideLoading()
           },
           success:res=>{
             console.log('wx.chooseImage',res);

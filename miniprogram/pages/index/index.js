@@ -81,7 +81,7 @@ Page({
   time:0,
   stime:0,
   qnevent2(e){
-    console.log('qnevent2',e.detail);
+    //console.log('qnevent2',e.detail);
     if(e.detail.act=='uploadStart'){
       this.stime=new Date()/1000
     }
