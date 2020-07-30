@@ -102,7 +102,10 @@ Component({
       console.log('uploadFile',this.files[this.upConfGroup][fileIndex])
       let qnConf=this.files[this.upConfGroup][fileIndex].conf.qnConf
       let upConf=this.files[this.upConfGroup][fileIndex].conf.upConf
-      if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].path.indexOf('://tmp')<0) return;//已上传
+      if(this.files[this.upConfGroup][fileIndex]
+        && this.files[this.upConfGroup][fileIndex].path.indexOf('://tmp')<0
+        && this.files[this.upConfGroup][fileIndex].path.indexOf('://temp')<0
+      ) return;//已上传
       if(this.files[this.upConfGroup][fileIndex] && this.files[this.upConfGroup][fileIndex].progress==100) return;//已上传
       let token=await cloud.getTokenQiniu(qnConf)
       let filename=file.split('.');
