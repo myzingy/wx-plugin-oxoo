@@ -123,7 +123,6 @@ Component({
         url:cloud.getUploadPath(qnConf.region),
         filePath:file,
         name: 'file',
-        header: {},
         formData:{
           token:token,
           'x:userpath':prefixPath,
