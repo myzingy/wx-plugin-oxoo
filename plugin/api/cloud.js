@@ -45,6 +45,7 @@ module.exports = {
         secretKey:params.secretKey,
         bucket:params.bucket,
         fileType:params.fileType||'',
+        format:params.format||'jpg',
       },
     })
     if(res.result.code==200){

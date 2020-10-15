@@ -8,6 +8,7 @@ Page({
       fileType:'image',
       region:'华东',
       domain:'http://kk001.pfotoo.com',
+      format:'webp',
     },
     upConf:{
       prefixPath:'mkblk', //上传到七牛后有一个路径前缀，可为空
