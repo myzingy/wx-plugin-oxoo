@@ -30,7 +30,7 @@
     <text wx:if="{{sec_all}}">总耗时{{sec_all}}，进度100%=>success:{{sec}} </text>
     <qnupload wx:if="{{hasAddFile2}}"
               qnConf="{{qnConf2}}" upConf="{{upConf2}}"
-              file="{{item}}" files="{{files2}}"
+              file="{{item}}" files="{{files2}}" fsm="{{fsm}}"
               bindevent="qnevent2" class="qnupload video">
         <view class="upload add"></view>
     </qnupload>

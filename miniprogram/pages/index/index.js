@@ -43,7 +43,7 @@ Page({
     hasHidden:true,//图片预览
     currentIndex:0,
 
-    //fsm:wx.getFileSystemManager(),//分块上传依赖
+    fsm:wx.getFileSystemManager(),//分块上传依赖
     hasIphone:false,
   },
   onLoad: function() {

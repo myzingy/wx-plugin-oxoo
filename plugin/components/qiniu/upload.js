@@ -1,6 +1,6 @@
 import cloud from '../../api/cloud'
 import util from '../../api/util'
-const chunkSize = 1024*1024*4 //4m
+const chunkSize = 1024*1024*4 //七牛限制，必须大于等于4M
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length);
   var bufView = new Uint8Array(buf);
@@ -234,7 +234,7 @@ Component({
           },
           success:res=>{
             console.log('wx.chooseVideo',new Date()/1000,res);
-            let hasUploadBlock=(this.data.fsm?true:false) && res.tempFiles[0].size > chunkSize ;
+            let hasUploadBlock=(this.data.fsm?true:false) && res.size > chunkSize ;
             res.current=nowCount
             res.progress=0
             res.path=res.tempFilePath
@@ -329,13 +329,25 @@ Component({
       this.triggerEvent('event',{act:'uploadStart',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
 
       let fsm=this.data.fsm
-      let ab_val=fsm.readFileSync(file.path);
-      let ab_val_length=ab_val.byteLength
-      let chunks = Math.ceil(file.size / chunkSize)
+      //let ab_val=fsm.readFileSync(file.path);
+      //let ab_val_length=ab_val.byteLength
+      let ab_val_length= file.size
+      let chunks = parseInt(ab_val_length / chunkSize)
+      let chunkSizeLast=ab_val_length % chunkSize
+      if(chunkSizeLast>0){
+        chunks+=1
+      }
       let token=await cloud.getTokenQiniu(this.data.qnConf)
-      console.log('chunks',chunks,ab_val_length)
+      console.log('chunks',chunks,ab_val_length,chunkSizeLast)
       let ctx=[];
       for(let x=0;x<chunks;x++){
+        let posend=chunkSize
+        if(x+1==chunks){
+          posend=chunkSizeLast
+        }
+        console.log('chunks/'+x,x*chunkSize,x*chunkSize+posend)
+        let tmp_ab=fsm.readFileSync(file.path,'',x*chunkSize,posend);
+        /*
         let posend=x*chunkSize+chunkSize
         let tmp_ab=ab_val.slice(x*chunkSize,x>=chunks-1?ab_val_length:posend);
         /* res
@@ -348,8 +360,11 @@ Component({
         */
         try{
           let res=await this.mkblk(token,tmp_ab);
-          ctx.push(res.data.ctx)
           console.log('this.mkblk.res'+x,res);
+          if(res.statusCode!=200){
+            throw new Error('this.mkblk/'+x+' error');
+          }
+          ctx.push(res.data.ctx)
           this.files[this.upConfGroup][fileIndex].progress=parseInt(100*(x/chunks));
           this.triggerEvent('event',{act:'uploadProgress',data:this.files[this.upConfGroup],fileCurrent:fileIndex})
         }catch (e){
@@ -386,6 +401,7 @@ Component({
     },
 
     mkblk(token,ab_val){
+      console.log('mkblk.byteLength',ab_val.byteLength)
       return new Promise((success,fail)=>{
         wx.request({
           url:cloud.getUploadPath(this.data.qnConf.region)+'/mkblk/'+ab_val.byteLength,
